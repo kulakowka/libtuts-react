@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Firebase from 'firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
+import LinkedStateMixin from 'react-addons-linked-state-mixin'
 
 const ref = new Firebase('https://libtuts.firebaseio.com/')
 
@@ -16,10 +17,6 @@ class HomepageContainer extends Component {
 
   componentDidMount () {
     this.bindAsArray(ref.child('Languages'), 'languages')
-  }
-
-  handleChange (event) {
-    this.setState({name: event.target.value})
   }
 
   handleSubmit (event) {
@@ -42,7 +39,7 @@ class HomepageContainer extends Component {
       <div>
         Homepage
         <div>
-          <input placeholder='New language' value={this.state.name} onChange={this.handleChange.bind(this)}/>
+          <input placeholder='New language' valueLink={this.linkState('name')}/>
           <button onClick={this.handleSubmit.bind(this)}>create</button>
         </div>
         <br/>
@@ -55,6 +52,7 @@ class HomepageContainer extends Component {
 }
 
 reactMixin(HomepageContainer.prototype, ReactFireMixin)
+reactMixin(HomepageContainer.prototype, LinkedStateMixin)
 
 HomepageContainer.contextTypes = {
   router: React.PropTypes.object
