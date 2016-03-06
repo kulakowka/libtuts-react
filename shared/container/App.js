@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Header from '../components/Header/Header'
 import Footer from '../components/Footer/Footer'
 import Firebase from 'firebase'
-import styles from './App.css'
+import styles from './App.styl'
 
 const ref = new Firebase('https://libtuts.firebaseio.com/')
 
