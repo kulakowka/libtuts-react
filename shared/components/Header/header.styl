@@ -1,2 +1,50 @@
 .header
-  background pink
+  background #fff
+  z-index 2
+  // border-bottom 1px solid #eee
+  box-shadow 0px 1px 2px 0px rgba(0, 0, 0, 0.2)
+  text-align center
+  position relative
+.inner
+  min-height 60px
+  line-height 60px
+  max-width 1024px
+  margin auto
+  nav
+    font-size 1.1em
+
+.item
+  color #222
+  font-weight bold
+  display inline-block
+  padding 0px 20px
+  &:first-letter
+    text-transform uppercase
+  &:hover
+    text-decoration none
+    background deeppink
+    color white
+    cursor pointer
+
+
+.siteName
+  color #222
+  font-size 1.4em
+  font-weight bold
+  display inline-block
+  padding 0px 0px
+  
+  padding 0px 20px
+  float left
+  &:hover
+    text-decoration none
+    background deeppink
+    color white
+    
+.mainMenu
+  float left
+
+.userMenu,
+.guestMenu
+  float right
+    

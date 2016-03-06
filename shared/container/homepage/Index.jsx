@@ -1,51 +1,44 @@
 import React, { Component } from 'react'
-import Firebase from 'firebase'
+import firebase from '../../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import LinkedStateMixin from 'react-addons-linked-state-mixin'
-
-const ref = new Firebase('https://libtuts.firebaseio.com/')
+import Row from '../../components/grid/row'
+import Col from '../../components/grid/col'
+import Tutorials from '../../components/tutorials/list'
+// import Projects from '../../components/projects/list'
+// import Languages from '../../components/languages/list'
 
 class HomepageContainer extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {
-      name: '',
+      tutorials: [],
+      projects: [],
       languages: []
     }
   }
 
   componentDidMount () {
-    this.bindAsArray(ref.child('Languages'), 'languages')
-  }
-
-  handleSubmit (event) {
-    event.preventDefault()
-    if (this.state.name === '') return false
-    this.firebaseRefs.languages.update({
-      [this.state.name]: {
-        name: this.state.name
-      }
-    })
-    this.setState({name: ''})
-  }
-
-  renderLanguage (language) {
-    return <li key={language['.key']}>{language.name}</li>
+    this.bindAsArray(firebase.child('Tutorials'), 'tutorials')
+    this.bindAsArray(firebase.child('Projects'), 'projects')
+    this.bindAsArray(firebase.child('Languages'), 'languages')
   }
 
   render () {
     return (
       <div>
-        Homepage
-        <div>
-          <input placeholder='New language' valueLink={this.linkState('name')}/>
-          <button onClick={this.handleSubmit.bind(this)}>create</button>
-        </div>
-        <br/>
-        <ul>
-          {this.state.languages.map(this.renderLanguage)}
-        </ul>
+        <Row left>
+          <Col>
+            <Tutorials tutorials={this.state.tutorials}/>
+          </Col>
+        </Row>
+        <Row left>
+          <Col>
+            projects
+            languages
+          </Col>
+        </Row>
       </div>
     )
   }

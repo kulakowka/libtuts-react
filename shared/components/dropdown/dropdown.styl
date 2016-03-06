@@ -1,0 +1,56 @@
+.dropdown
+  position relative
+  display inline-block
+
+.handle
+  display inline-block
+  cursor pointer
+  color #222
+  font-weight bold
+  display inline-block
+  padding 0px 20px
+  &:first-letter
+    text-transform uppercase
+  &:hover
+    text-decoration none
+    background deeppink
+    color white
+    cursor pointer
+.menu
+  display none
+  background white
+  position absolute
+  top 0px
+  box-shadow 0 2px 8px 0 rgba(0, 0, 0, 0.3)
+  text-align right
+  z-index 10
+  
+  a + a
+    border-top 1px solid #eee
+  a
+    display block
+    padding 0px 20px
+    line-height 60px
+    white-space nowrap
+    text-decoration none
+    font-weight bold
+    color #222
+    cursor pointer
+    &:first-letter
+      text-transform uppercase
+    &:hover
+      background deeppink
+      color white
+
+    
+.left
+  text-align left
+  left 0px
+
+.right
+  text-align right
+  right 0px
+
+//.dropdown:hover,
+.open
+  display inline-block
