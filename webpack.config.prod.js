@@ -33,7 +33,9 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        BASE_URL: JSON.stringify('http://localhost:3000'),
+        APP_ID: JSON.stringify('libtuts'),
+        NODE_ENV: JSON.stringify('production')
       }
     }),
     new webpack.optimize.UglifyJsPlugin({

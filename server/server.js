@@ -44,6 +44,7 @@ const renderFullPage = (html, initialState) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>LibTuts</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic,300,100,100italic,300italic,500,500italic,900,900italic&subset=latin,cyrillic"/>
         ${css}
       </head>
       <body>

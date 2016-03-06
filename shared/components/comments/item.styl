@@ -1,0 +1,33 @@
+.item
+  position relative
+  &:target:after
+    content ''
+    position absolute
+    left 0px
+    top 0
+    bottom 0
+    width 4px
+    background deeppink
+  &:target
+    > .meta  
+      color deeppink
+      a
+        color deeppink
+      a.creator
+        color deeppink
+        
+.meta
+  color grey
+  a
+    color grey
+    text-transform lowecase
+    &.creator
+      font-weight bold
+      color #222
+  a + a
+    margin-left 10px
+
+.content
+  line-height 1.3em
+  *:last-child
+    margin-bottom 0
