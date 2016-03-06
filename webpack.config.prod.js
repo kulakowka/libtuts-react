@@ -8,7 +8,7 @@ module.exports = {
 
   output: {
     path: __dirname + '/static/dist/',
-    filename: 'bundle.js'
+    filename: 'bundle.min.js'
   },
 
   resolve: {

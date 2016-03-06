@@ -1,5 +1,4 @@
 import Express from 'express'
-// import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
 import path from 'path'
 
@@ -34,7 +33,9 @@ app.use(Express.static(path.resolve(__dirname, '../static')))
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css'
+  const css = process.env.NODE_ENV === 'production' ? '<link rel="stylesheet" href="/dist/app.min.css" />' : ''
+  const js = process.env.NODE_ENV === 'production' ? '<script src="/dist/bundle.min.js"></script>' : '<script src="/dist/bundle.js"></script>'
+
   return `
     <!doctype html>
     <html>
@@ -43,14 +44,14 @@ const renderFullPage = (html, initialState) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>LibTuts</title>
-        <link rel="stylesheet" href=${cssPath} />
+        ${css}
       </head>
       <body>
         <div id="root">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-        <script src="/dist/bundle.js"></script>
+        ${js}
       </body>
     </html>
   `
