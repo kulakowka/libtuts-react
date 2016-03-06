@@ -11,7 +11,7 @@ hook({
     return stylus(css)
       .set('filename', filename)
       .render()
-  },
+  }
 })
 
 require('./server/server')
