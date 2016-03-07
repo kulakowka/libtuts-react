@@ -3,7 +3,7 @@ import styles from './section.styl'
 
 function Section (props) {
   return (
-    <section className={styles.section}>
+    <section {...props} className={styles.section + ' ' + props.className}>
       {props.children}
     </section>
   )

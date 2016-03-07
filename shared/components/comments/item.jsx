@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import styles from './item.styl'
 import helpers from '../../../utils/helpers'
 import moment from 'moment'
+import Section from '../section/section'
 
 function CommentsItem (props) {
   const id = props['.key']
@@ -17,13 +18,13 @@ function CommentsItem (props) {
   const content = () => ({__html: contentHtml})
 
   return (
-    <section className={styles.item} id={'comment_' + id} key={id}>
+    <Section className={styles.item} id={'comment_' + id} key={id}>
       <div className={styles.meta}>
         <Link className={styles.creator} to={helpers.userUrl(author)}>{author}</Link>
         <Link to={helpers.commentUrl(tutorial, id)}>{moment(createdAt).fromNow()}</Link>
       </div>
       <div className={styles.content} dangerouslySetInnerHTML={content()}/>
-    </section>
+    </Section>
   )
 }
 

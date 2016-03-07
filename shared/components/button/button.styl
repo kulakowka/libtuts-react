@@ -1,0 +1,59 @@
+.btn
+  -webkit-appearance none
+  border 0
+  padding 0 1.2em
+  margin 0
+  border-radius 3px
+  line-height 40px
+  display inline-block
+  vertical-align middle
+  font-weight bold
+  cursor pointer
+  border 1px solid grey
+  background transparent 
+  color grey
+  white-space nowrap
+  &:hover 
+    border 1px solid grey
+    background grey
+    color white
+    text-decoration none
+  &:focus
+    border 1px solid deepskyblue
+    background deepskyblue
+    color white
+    outline none
+
+.wide
+  width 100%
+
+.disabled
+  opacity 0.3
+  cursor not-allowed
+  background inherit !important
+  color inherit !important
+  border-color inherit !important
+  &:after
+    content '...'
+
+.action
+  border 1px solid deeppink
+  background transparent 
+  color deeppink
+  &:hover 
+    background deeppink
+    color white
+  &:focus
+    border 1px solid deepskyblue
+    background deepskyblue
+    color white
+    outline none
+    
+.loading
+  &:after
+    content '...'
+  
+
+
+
+

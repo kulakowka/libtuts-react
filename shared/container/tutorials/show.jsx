@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import firebase from '../../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-// import Show from '../../components/tutorials/show'
+import Show from '../../components/tutorials/show'
 import Comments from '../../components/comments/list'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
@@ -28,7 +28,7 @@ class TutorialContainer extends Component {
       <Row>
         <Col size={8}>
 
-          {/* <About user={this.state.user}/> */}
+          <Show tutorial={this.state.tutorial}/>
 
           <h2>Comments</h2>
           <Comments comments={this.state.comments}/>
