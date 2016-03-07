@@ -9,9 +9,7 @@ import styles from './col.styl'
  * <Col right size={10}></Col>
  */
 function Col (props) {
-  const align = props.rigth
-    ? styles.rigth
-    : styles.left
+  const align = props.rigth ? styles.rigth : (props.left ? styles.left : '')
 
   const size = (props.size && props.size > 0 && props.size <= 10)
     ? styles['size' + props.size]

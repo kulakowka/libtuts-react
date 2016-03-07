@@ -1,8 +1,8 @@
 import { Route, IndexRoute } from 'react-router'
 import React from 'react'
-// import ResetPassword from './container/auth/reset_password'
-// import SignIn from './container/auth/signin'
-// import SignUp from './container/auth/signup'
+import ResetPassword from './container/auth/reset_password'
+import SignIn from './container/auth/signin'
+import SignUp from './container/auth/signup'
 import DomainShow from './container/domains/show'
 import Homepage from './container/homepage/index'
 import InfoPage from './container/info/show'
@@ -21,11 +21,11 @@ import Layout from './layouts/main'
 const routes = (
   <Route path='/' component={Layout}>
     <IndexRoute component={Homepage} />
-    {/*
+    
     <Route path='/auth/reset_password' component={ResetPassword}/>
     <Route path='/auth/signin' component={SignIn}/>
     <Route path='/auth/signup' component={SignUp}/>
-    */}
+    
     <Route path='/domain/:domain' component={DomainShow}/>
     <Route path='/info/:page' component={InfoPage}/>
     <Route path='/languages' component={LanguagesIndex}/>

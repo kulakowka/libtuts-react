@@ -1,0 +1,85 @@
+// Стили для форм в левой части страницы (стандартные формы)
+// - Создание поста
+// - Добавление проекта
+
+.default
+
+.formError
+  border 1px dashed crimson
+  color crimson
+  margin 0 0 1em
+  border-radius 4px
+  padding 10px
+  text-align center
+  font-size 0.9em
+  
+.fieldError
+  color crimson
+  margin 0.3em 0 1em
+  text-align left
+  font-size 0.9em
+  
+.fieldDescription
+  text-align left
+  font-size 0.9em
+  line-height 1.4em
+  color #222
+  margin 0.5em 0 0
+
+.fieldDescription + .fieldDescription,
+.fieldDescription + .field,
+.field + .field
+  margin-top 1.4em
+
+.field
+  text-align left
+  > input[type="text"],
+  > input[type="email"],
+  > input[type="url"],
+  > input[type="password"],
+  > textarea
+    -webkit-appearance none
+    border 0
+    padding 0 15px
+    margin 0
+    border-radius 0px
+    line-height 40px
+    width 100%
+    max-width 100%
+    display inline-block
+    vertical-align middle
+    font-weight normal
+    font-size 1em
+    border 1px solid #eee
+    background #fff
+    color #222
+    &:disabled
+      color #aaa
+      cursor not-allowed
+    &:focus
+      outline none
+      border 1px solid deepskyblue
+    &:required
+      // border 1px solid pink
+    &:focus:invalid
+      border 1px solid crimson
+    &:focus:valid 
+      border 1px solid deepskyblue
+  textarea
+    resize none
+    line-height 20px
+    padding 10px 15px
+
+.fieldWithError
+  > input[type="text"],
+  > input[type="email"],
+  > input[type="url"],
+  > input[type="password"],
+  > textarea
+    border 1px solid crimson
+
+// .field.buttons
+//   .btn + .btn
+//     margin-left 1.5em
+// .field.buttons.center
+//   text-align center
