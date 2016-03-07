@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styles from './dropdown.styl'
 
 /**
@@ -11,24 +11,39 @@ import styles from './dropdown.styl'
  *   <Link to='/'>Home</Link>
  * </Dropdown>
  */
-function Dropdown (props) {
-  const style = props.left
-    ? styles.left
-    : (
-        props.right
-        ? styles.rigth
-        : styles.center
-      )
-  const state = 'open'
+class Dropdown extends Component {
+  constructor (props, context) {
+    super(props, context)
 
-  return (
-    <span className={styles.dropdown + ' ' + state}>
-      <a className={styles.handle}>{props.handle}</a>
-      <span className={styles.menu + ' ' + style}>
-        {props.children}
+    this.state = {
+      open: false
+    }
+  }
+
+  handleClick (event) {
+    event.preventDefault()
+    this.setState({open: true})
+    let close = () => {
+      console.log('close')
+      this.setState({open: false})
+      document.removeEventListener('click', close)
+    }
+    document.addEventListener('click', close)
+  }
+
+  render () {
+    const style = this.props.left ? styles.left : (this.props.right ? styles.right : styles.center)
+    const state = this.state.open ? styles.open : styles.closed
+
+    return (
+      <span className={styles.dropdown}>
+        <a className={styles.handle} onClick={this.handleClick.bind(this)}>{this.props.handle}</a>
+        <span className={styles.menu + ' ' + style + ' ' + state}>
+          {this.props.children}
+        </span>
       </span>
-    </span>
-  )
+    )
+  }
 }
 
 export default Dropdown
