@@ -46,7 +46,7 @@ const helpers = {
   },
 
   picUrl (id) {
-    return baseUrl + '/images/pics/' + id + '.png'
+    return '/img/pics/' + id + '.png'
   },
 
   userUrl (id) {
