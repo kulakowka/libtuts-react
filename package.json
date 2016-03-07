@@ -12,11 +12,13 @@
     "slate": "rimraf node_modules && npm install",
     "gzip": "npm run gzip:js && npm run gzip:css",
     "gzip:css": "gzip -c static/dist/app.min.css > static/dist/app.min.css.gz",
-    "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz"
+    "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz",
+    "seed": "cross-env APP_ID=libtuts DEBUG=app:* node seed"
   },
   "dependencies": {
     "babel-core": "^6.6.5",
     "body-parser": "^1.15.0",
+    "debug": "^2.2.0",
     "express": "^4.13.4",
     "firebase": "^2.4.1",
     "history": "^2.0.1",
