@@ -9,7 +9,10 @@
     "minify": "cleancss -o static/dist/app.min.css static/dist/app.css",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js && npm run minify",
     "clean": "rimraf static/dist",
-    "slate": "rimraf node_modules && npm install"
+    "slate": "rimraf node_modules && npm install",
+    "gzip": "npm run gzip:js && npm run gzip:css",
+    "gzip:css": "gzip -c static/dist/app.min.css > static/dist/app.min.css.gz",
+    "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz"
   },
   "dependencies": {
     "babel-core": "^6.6.5",
