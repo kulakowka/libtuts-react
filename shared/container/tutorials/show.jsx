@@ -30,7 +30,7 @@ class TutorialContainer extends Component {
 
           <Show tutorial={this.state.tutorial}/>
 
-          <h2>Comments</h2>
+          <h2>Questions and discussion</h2>
           <Comments comments={this.state.comments}/>
         </Col>
       </Row>

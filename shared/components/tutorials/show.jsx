@@ -11,7 +11,7 @@ function Tutorial (props) {
 
   if (!id) return <p>Loading...</p>
 
-  const {
+  let {
     title,
     contentHtml,
     source,
@@ -23,6 +23,9 @@ function Tutorial (props) {
     projects,
     keywords
   } = props.tutorial
+
+  languages = helpers.toArray(languages)
+  projects = helpers.toArray(projects)
 
   const content = () => ({__html: contentHtml})
 

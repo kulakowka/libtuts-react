@@ -45,7 +45,7 @@ function AboutProject (props) {
           </span> : null}
 
           {repository ? <span>
-            <dt>Repository:</dt>,
+            <dt>Repository:</dt>
             <dd><a href={repository} target='_blank'>{repository}</a></dd>
           </span> : null}
 
