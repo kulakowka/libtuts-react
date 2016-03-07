@@ -19,18 +19,22 @@ class ResetPasswordForm extends Component {
   render () {
     return (
       <Section>
-        <form className={styles.form} onSubmit={this.props.submitHandler}>
+        <form className={styles.form} onSubmit={this.props.onSubmit.bind(this, this.state)}>
+
+          {this.props.error
+            ? <div className={styles.fieldError}>{this.props.error}</div>
+            : null}
 
           <div className={styles.fieldDescription}>
             Enter your email address and we will send you temporary password with which within 24 hours you will be able to log in and update your account.
           </div>
 
           <div className={styles.field}>
-            <input type='text' valueLink={this.linkState('email')} placeholder='Email' required autoComplete='off'/>
+            <input type='email' valueLink={this.linkState('email')} placeholder='Email' required autoComplete='off'/>
           </div>
 
           <div className={styles.field}>
-            <Button action wide type='submit'>Reset password</Button>
+            <Button action wide loading={this.props.loading && 'Resetting password...'} type='submit'>Reset password</Button>
           </div>
         </form>
       </Section>

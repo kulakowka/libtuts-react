@@ -27,7 +27,7 @@ class SignUpForm extends Component {
             : null}
 
           <div className={styles.field}>
-            <input type='text' valueLink={this.linkState('email')} placeholder='Email' required autoComplete='off'/>
+            <input type='email' valueLink={this.linkState('email')} placeholder='Email' required autoComplete='off'/>
           </div>
 
           <div className={styles.fieldDescription}>

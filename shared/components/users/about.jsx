@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './about.styl'
+import Section from '../section/section'
 
 function AboutUser (props) {
   const id = props.user['.key']
@@ -15,14 +16,14 @@ function AboutUser (props) {
         : null
       }
 
-      <section>
+      <Section>
         <dl className={styles.meta}>
           {homepage
             ? <span><dt>Homepage:</dt><dd><Link to={homepage}>{homepage}</Link></dd></span>
             : null
           }
         </dl>
-      </section>
+      </Section>
     </div>
   )
 }

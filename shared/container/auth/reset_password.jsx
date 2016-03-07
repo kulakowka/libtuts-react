@@ -5,6 +5,8 @@ import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
+import Button from '../../components/button/button'
+import Section from '../../components/section/section'
 import Form from '../../components/auth/forms/reset_password'
 import helpers from '../../../utils/helpers'
 
@@ -14,12 +16,9 @@ class SignInContainer extends Component {
 
     this.state = {
       error: null,
-      loading: false
+      loading: false,
+      success: false
     }
-  }
-
-  componentDidMount () {
-    if (firebase.getAuth()) this.context.router.push('/')
   }
 
   handleSubmit (data, event) {
@@ -34,7 +33,11 @@ class SignInContainer extends Component {
   }
 
   success (authData) {
-    this.context.router.push('/')
+    this.setState({
+      error: null,
+      loading: false,
+      success: true
+    })
   }
 
   fail (error) {
@@ -44,12 +47,23 @@ class SignInContainer extends Component {
     })
   }
 
+  renderSuccess () {
+    return (
+      <Section left>
+        <p>A temporary password has been sent to your email. If it doesn't appear within a few minutes, check your spam folder.</p>
+        <Button to='/' wide action>Go to mainpage</Button>
+      </Section>
+    )
+  }
+
   render () {
     return (
       <Row>
         <Col size={4}>
           <h1>Sign in to LibTuts</h1>
-          <Form/>
+          {this.state.success
+            ? this.renderSuccess()
+            : <Form onSubmit={this.handleSubmit.bind(this)} {...this.state}/>}
           <p>New to LibTuts? <Link to={helpers.signUpUrl()}>Create an account</Link>.</p>
         </Col>
       </Row>

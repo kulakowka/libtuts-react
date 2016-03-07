@@ -30,7 +30,7 @@ function Header (props, context) {
             <Link className={styles.item} to={helpers.addTutorialUrl()}>Add Tutorial</Link>
             <Dropdown handle={currentUser.username} right>
               <Link to={helpers.userUrl(currentUser.username)}>{currentUser.username}</Link>
-              <Link to={helpers.settingsUrl()}>Settings</Link>
+              {/*<Link to={helpers.settingsUrl()}>Settings</Link>*/}
               <a onClick={logout}>Sign Out</a>
             </Dropdown>
           </nav>
