@@ -78,7 +78,7 @@ const helpers = {
   },
 
   infoPageUrl (page) {
-    return '/' + page
+    return '/info/' + page
   },
 
   /**

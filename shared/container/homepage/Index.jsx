@@ -28,17 +28,9 @@ class HomepageContainer extends Component {
   render () {
     return (
       <div>
-        <Row left>
-          <Col>
-            <Tutorials tutorials={this.state.tutorials}/>
-          </Col>
-        </Row>
-        <Row left>
-          <Col>
-            <Projects projects={this.state.projects}/>
-            <Languages languages={this.state.languages}/>
-          </Col>
-        </Row>
+        <Tutorials tutorials={this.state.tutorials}/>
+        <Projects projects={this.state.projects}/>
+        <Languages languages={this.state.languages}/>
       </div>
     )
   }

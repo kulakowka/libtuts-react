@@ -3,9 +3,9 @@ import React from 'react'
 // import ResetPassword from './container/auth/reset_password'
 // import SignIn from './container/auth/signin'
 // import SignUp from './container/auth/signup'
-// import DomainShow from './container/domains/show'
+import DomainShow from './container/domains/show'
 import Homepage from './container/homepage/index'
-// import InfoPage from './container/info/show'
+import InfoPage from './container/info/show'
 import LanguagesIndex from './container/languages/index'
 import LanguageShow from './container/languages/show'
 import ProjectsIndex from './container/projects/index'
@@ -25,9 +25,9 @@ const routes = (
     <Route path='/auth/reset_password' component={ResetPassword}/>
     <Route path='/auth/signin' component={SignIn}/>
     <Route path='/auth/signup' component={SignUp}/>
+    */}
     <Route path='/domain/:domain' component={DomainShow}/>
     <Route path='/info/:page' component={InfoPage}/>
-    */}
     <Route path='/languages' component={LanguagesIndex}/>
     <Route path='/language/:id' component={LanguageShow}/>
     <Route path='/projects' component={ProjectsIndex}/>
