@@ -93,6 +93,13 @@ const helpers = {
     })
   },
 
+  addKey (obj) {
+    return Object.keys(obj).map((key) => {
+      obj[key]['.key'] = key
+      return obj[key]
+    })
+  },
+
   /**
    * > tagsByCommas(keywords, (keyword, i) => <a href={'/search?keywords=' + keyword} key={i}>{keyword}</a>)}
    */

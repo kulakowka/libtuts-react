@@ -55,7 +55,7 @@ module.exports = {
       title: 'Tutorial 1 with source url',
       source: 'https://facebook.github.io/react/blog/2016/01/12/discontinuing-ie8-support.html',
       domain: 'facebook.github.io',
-      keywords: ['react', 'reactjs', 'javascript', 'ruby'],
+      keywords: ['react', 'reactjs'],
       languages: {
         javascript: 'JavaScript',
         ruby: 'Ruby'
