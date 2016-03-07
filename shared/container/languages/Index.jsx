@@ -1,21 +1,26 @@
 import React, { Component } from 'react'
+import firebase from '../../../utils/firebase'
+import ReactFireMixin from 'reactfire'
+import reactMixin from 'react-mixin'
+import Languages from '../../components/languages/list'
 
-class LanguagesIndexContainer extends Component {
-  // constructor (props, context) {
-  //   super(props, context)
-  // }
+class LanguagesContainer extends Component {
+  constructor (props, context) {
+    super(props, context)
+    this.state = {
+      languages: []
+    }
+  }
+
+  componentDidMount () {
+    this.bindAsArray(firebase.child('Languages'), 'languages')
+  }
 
   render () {
-    return (
-      <div>
-        LanguagesIndex
-      </div>
-    )
+    return <Languages languages={this.state.languages}/>
   }
 }
 
-LanguagesIndexContainer.contextTypes = {
-  router: React.PropTypes.object
-}
+reactMixin(LanguagesContainer.prototype, ReactFireMixin)
 
-export default LanguagesIndexContainer
+export default LanguagesContainer

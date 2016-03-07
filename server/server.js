@@ -66,6 +66,7 @@ app.use((req, res) => {
     }
 
     if (!renderProps) {
+      console.log('OLOLO')
       return res.status(404).end('Not found!')
     }
 

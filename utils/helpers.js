@@ -82,6 +82,18 @@ const helpers = {
   },
 
   /**
+   * toArray: Return an array from object
+   *
+   * > toArray({node: true, js: true})
+   * [{key: 'node', value: true}, {key: 'js', value: true}]
+   */
+  toArray (obj) {
+    return Object.keys(obj).map((key) => {
+      return {key, value: obj[key]}
+    })
+  },
+
+  /**
    * > tagsByCommas(keywords, (keyword, i) => <a href={'/search?keywords=' + keyword} key={i}>{keyword}</a>)}
    */
   tagsByCommas (data, iterator) {
