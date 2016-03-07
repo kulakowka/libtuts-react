@@ -20,7 +20,11 @@ class SignInForm extends Component {
   render () {
     return (
       <Section>
-        <form className={styles.form} onSubmit={this.props.submitHandler}>
+        <form className={styles.form} onSubmit={this.props.onSubmit.bind(this, this.state)}>
+
+          {this.props.error
+            ? <div className={styles.fieldError}>{this.props.error}</div>
+            : null}
 
           <div className={styles.field}>
             <input type='text' valueLink={this.linkState('email')} placeholder='Email' required autoComplete='off'/>
@@ -35,7 +39,7 @@ class SignInForm extends Component {
           </div>
 
           <div className={styles.field}>
-            <Button action wide type='submit'>Sign in</Button>
+            <Button action wide loading={this.props.loading && 'Signing in...'} type='submit'>Sign in</Button>
           </div>
         </form>
       </Section>

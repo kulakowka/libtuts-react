@@ -20,14 +20,14 @@ function Button (props) {
   if (props.to) {
     return (
       <Link {...props} className={style}>
-        {props.children}
+        {props.loading || props.children}
       </Link>
     )
   }
 
   return (
-    <button {...props} className={style}>
-      {props.children}
+    <button {...props} disabled={props.disabled || props.loading} className={style}>
+      {props.loading || props.children}
     </button>
   )
 }

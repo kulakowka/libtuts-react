@@ -9,7 +9,10 @@ function Header (props, context) {
   const currentUser = firebase.getAuth()
   if (currentUser) currentUser.username = currentUser.password.email.split('@')[0]
 
-  const logout = () => firebase.unauth()
+  const logout = () => {
+    firebase.unauth()
+    context.router.push('/')
+  }
 
   return (
     <header className={styles.header}>

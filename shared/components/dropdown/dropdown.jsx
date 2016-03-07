@@ -15,20 +15,24 @@ class Dropdown extends Component {
   constructor (props, context) {
     super(props, context)
 
+    this.close = () => {
+      this.setState({open: false})
+      document.removeEventListener('click', this.close)
+    }
+
     this.state = {
       open: false
     }
   }
 
+  componentWillUnmount () {
+    document.removeEventListener('click', this.close)
+  }
+
   handleClick (event) {
     event.preventDefault()
     this.setState({open: true})
-    let close = () => {
-      console.log('close')
-      this.setState({open: false})
-      document.removeEventListener('click', close)
-    }
-    document.addEventListener('click', close)
+    document.addEventListener('click', this.close)
   }
 
   render () {

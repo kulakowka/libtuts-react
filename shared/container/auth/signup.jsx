@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-// import firebase from '../../../utils/firebase'
+import firebase from '../../../utils/firebase'
 import { Link } from 'react-router'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
@@ -9,12 +9,40 @@ import Form from '../../components/auth/forms/signup'
 import helpers from '../../../utils/helpers'
 
 class SignInContainer extends Component {
-  // constructor (props, context) {
-  //   super(props, context)
-  // }
+  constructor (props, context) {
+    super(props, context)
+
+    this.state = {
+      error: null,
+      loading: false
+    }
+  }
 
   componentDidMount () {
+    if (firebase.getAuth()) this.context.router.push('/')
+  }
 
+  handleSubmit (data, event) {
+    event.preventDefault()
+
+    this.setState({error: null, loading: true})
+
+    firebase
+    .createUser(data)
+    .then((authData) => firebase.authWithPassword(data))
+    .then(this.success.bind(this))
+    .catch(this.fail.bind(this))
+  }
+
+  success () {
+    this.context.router.push('/')
+  }
+
+  fail (error) {
+    this.setState({
+      error: error.message,
+      loading: false
+    })
   }
 
   render () {
@@ -22,7 +50,7 @@ class SignInContainer extends Component {
       <Row>
         <Col size={4}>
           <h1>Create your LibTuts account</h1>
-          <Form/>
+          <Form onSubmit={this.handleSubmit.bind(this)} {...this.state}/>
           <p>Do you have an account? <Link to={helpers.signInUrl()}>Sign in</Link>.</p>
         </Col>
       </Row>
