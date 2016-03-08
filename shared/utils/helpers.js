@@ -100,6 +100,13 @@ const helpers = {
     })
   },
 
+  toObject (arr) {
+    return arr.reduce((result, item) => {
+      result[item] = true
+      return result
+    }, {})
+  },
+
   /**
    * > tagsByCommas(keywords, (keyword, i) => <a href={'/search?keywords=' + keyword} key={i}>{keyword}</a>)}
    */

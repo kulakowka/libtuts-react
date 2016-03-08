@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import firebase from '../../utils/firebase'
-import Firebase from 'firebase'
 import helpers from '../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
@@ -25,7 +24,7 @@ class NewTutorialContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
-    console.log(data)
+    console.log('data', data, event)
 
     this.setState({error: null, loading: true})
 

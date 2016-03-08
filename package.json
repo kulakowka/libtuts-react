@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "babel-core": "^6.6.5",
+    "babel-plugin-transform-object-assign": "^6.5.0",
     "body-parser": "^1.15.0",
     "config": "^1.19.0",
     "debug": "^2.2.0",
