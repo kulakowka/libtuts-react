@@ -9,68 +9,78 @@ class TutorialsContainer extends Component {
     super(props, context)
     this.state = {
       lastId: '',
-      tutorials: []
+      tutorials: [],
+      items: []
     }
   }
 
-  loadTutorials () {
-    const tutorialsRef = ref
-    .child('Tutorials')
-    .orderByChild('title')
-    .limitToFirst(2)
-
-    this.bindAsArray(tutorialsRef, 'tutorials')
-  }
-
   componentDidMount () {
-    this.loadTutorials()
+    ref
+    .child('items')
+    .limitToLast(20)
+    .on('child_added', (snap) => {
+      console.log('componentDidMount.child_added', snap.val())
+      let item = snap.val()
+      item['.key'] = snap.key()
+      let items = this.state.items
+      items.push(item)
+
+      this.setState({
+        items
+      })
+    })
+
+    // this.bindAsArray(tutorialsRef, 'tutorials')
   }
 
-  onPrev (e) {
+  loadMore (e) {
     e.preventDefault()
 
-    let firstTitle = this.state.tutorials[0].title
-    let lastTitle = this.state.tutorials[this.state.tutorials.length - 1].title
+    console.log('this.state.items', this.state.items)
 
-    console.log('firstTitle', firstTitle)
-    console.log('lastTitle', lastTitle)
+    let lastKey = this.state.items[this.state.items.length - 1]['.key']
 
-    this.unbind('tutorials')
+    console.log('lastKey', lastKey)
 
-    const tutorialsRef = ref
-    .child('Tutorials')
-    .orderByChild('title')
-    .endAt(firstTitle)
-    .limitToLast(2)
+    ref
+    .child('items')
+    // .orderByChild('createdAt')
+    .orderByKey()
+    .startAt(lastKey) // взять все начиная с createdAt = createdAt последнего в списке
+    .limitToFirst(2) // взять первые 2
+    .on('child_added', (snap) => {
+      console.log('loadMore.child_added', snap.key())
+      let item = snap.val()
+      item['.key'] = snap.key()
+      this.setState({
+        items: this.state.items.concat(item)
+      })
+    })
 
-    this.bindAsArray(tutorialsRef, 'tutorials')
-  }
+    // let firstTitle = this.state.tutorials[0].title
+    // let lastTitle = this.state.tutorials[this.state.tutorials.length - 1].title
 
-  onNext (e) {
-    e.preventDefault()
+    // console.log('firstTitle', firstTitle)
+    // console.log('lastTitle', lastTitle)
 
-    let firstTitle = this.state.tutorials[0].title
-    let lastTitle = this.state.tutorials[this.state.tutorials.length - 1].title
+    // this.unbind('tutorials')
 
-    console.log('firstTitle', firstTitle)
-    console.log('lastTitle', lastTitle)
+    // const tutorialsRef = ref
+    // .child('Tutorials')
+    // .orderByChild('title')
+    // .startAt(lastTitle)
+    // .limitToFirst(2)
 
-    this.unbind('tutorials')
-
-    const tutorialsRef = ref
-    .child('Tutorials')
-    .orderByChild('title')
-    .startAt(lastTitle)
-    .limitToFirst(2)
-
-    this.bindAsArray(tutorialsRef, 'tutorials')
+    // this.bindAsArray(tutorialsRef, 'tutorials')
   }
 
   render () {
+    let items = this.state.items.map((item) => item)
+    items.reverse()
     return <div>
-      <Tutorials tutorials={this.state.tutorials}/>
-      <button style={{float: 'left'}} onClick={this.onPrev.bind(this)}>prev</button>
-      <button style={{float: 'right'}} onClick={this.onNext.bind(this)}>next</button>
+      {/*<Tutorials tutorials={this.state.tutorials}/>*/}
+      {items.map((item) => <p key={item['.key']}>#{item['.key']} ---- {item.createdAt}</p>)}
+      <button onClick={this.loadMore.bind(this)}>load more...</button>
     </div>
   }
 }
