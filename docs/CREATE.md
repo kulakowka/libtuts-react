@@ -10,11 +10,13 @@ const uid = ref.getAuth().uid
 // Create the data we want to update
 const data = {
   ['users/' + uid + '/profile']: {
-    username: 'admin',
+    username: @username,
     fullName: 'Anton Kulakov',
     createdAt: Firebase.ServerValue.TIMESTAMP,
     updatedAt: Firebase.ServerValue.TIMESTAMP
-  }
+  },
+
+  ['users_usernames_to_uids/' + @username]: uid
 }
 
 // Do a deep-path update
@@ -127,10 +129,14 @@ const languageId = ref.child('languages').push()
 const data = {
   ['languages/' + languageId + '/data']: {
     name: 'JavaScript',
-    slug: 'javascript'
+    slug: @slug
   },
 
-  ['homepage/languages/' + languageId]: true
+  ['homepage/languages/' + languageId]: true,
+
+  ['languages_slugs_to_ids/' + @slug]: languageId
+
+
 }
 
 // Do a deep-path update
@@ -170,7 +176,9 @@ const data = {
 
   ['users/' + uid + '/projects/' + projectId]: true,
 
-  ['homepage/projects/' + languageId]: true
+  ['homepage/projects/' + projectId]: true,
+
+  ['projects_slugs_to_ids/' + @slug]: projectId
 
 }
 //

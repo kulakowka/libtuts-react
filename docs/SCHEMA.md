@@ -1,3 +1,6 @@
+users_usernames_to_uids:
+  // users_usernames_to_uids/:username
+  @username: @user_id
 
 users: {
   // users/:user_id
@@ -90,6 +93,10 @@ comments: {
   }
 }
 
+languages_slugs_to_ids:
+  // languages_slugs_to_ids/:slug
+  @slug: @language_id
+
 languages: {
   // languages/:language_id
   @language_id: ...
@@ -116,6 +123,10 @@ languages: {
   }
 }
 
+projects_slugs_to_ids:
+  // projects_slugs_to_ids/:slug
+  @slug: @project_id
+  
 projects: {
   // projects/:project_id
   @project_id: ...
