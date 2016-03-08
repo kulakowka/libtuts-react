@@ -29,19 +29,20 @@ specsRef.set({
 /**
  * Очередь для санитайза туториалов
  */
-var publishTutorialQueue = new Queue(queueRef, {'specId': 'publish_tutorial'},
+var publishTutorialQueue = new Queue(queueRef, 
+  {'specId': 'publish_tutorial'},
   (data, progress, resolve, reject) => {
     const key = tutorialsRef.push().key()
 
     data = processTutorial(data)
 
     // Create the data we want to update
-    let updatedUserData = {}
-    updatedUserData['_user_tutorials/' + data.author + '/' + key] = data
-    updatedUserData['Tutorials/' + key] = data
+    let _data = {}
+    _data['_user_tutorials/' + data.author + '/' + key] = data
+    _data['Tutorials/' + key] = data
 
     ref
-    .update(updatedUserData)
+    .update(_data)
     .then(() => {
       resolve({key})
     })
@@ -53,7 +54,8 @@ var publishTutorialQueue = new Queue(queueRef, {'specId': 'publish_tutorial'},
 /**
  * Очередь для рассылки туториалов в нужные места
  */
-var publishTutorialDoneQueue = new Queue(queueRef, {'specId': 'publish_tutorial_done'},
+var publishTutorialDoneQueue = new Queue(queueRef, 
+  {'specId': 'publish_tutorial_done'},
   (data, progress, resolve, reject) => {
     resolve(data)
     debug('publish_tutorial_done: %s', data.key)

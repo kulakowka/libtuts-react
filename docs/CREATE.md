@@ -43,14 +43,17 @@ const data = {
 
   ['tutorials/' + tutorialId + '/data']: {
     title: 'Tutorial 1',
-    content: 'Text for tutorial 1',
-    contentHtml: '<p>Text for tutorial 1</p>',
     source: 'http://blog.facebook.com/post/123.html',
     domain: 'blog.facebook.com',
     keywords: ['react', 'redux'],
     createdAt: Firebase.ServerValue.TIMESTAMP,
     updatedAt: Firebase.ServerValue.TIMESTAMP
     author: uid
+  },
+
+  ['tutorials/' + tutorialId + '/content']: {
+    markdown: 'Text for tutorial 1',
+    html: '<p>Text for tutorial 1</p>'
   },
 
   ['tutorials/' + tutorialId + '/languages']: {
@@ -68,9 +71,8 @@ const data = {
 
   languages.map => ['languages/' + @language_id + '/tutorials/' + tutorialId]: true,
 
-  projects.map => ['projects/' + @project_id + '/tutorials/' + tutorialId]: true,
+  projects.map => ['projects/' + @project_id + '/tutorials/' + tutorialId]: true
 
-  ['homepage/tutorials/' + tutorialId]: true
 }
 
 // Do a deep-path update
@@ -132,10 +134,7 @@ const data = {
     slug: @slug
   },
 
-  ['homepage/languages/' + languageId]: true,
-
   ['languages_slugs_to_ids/' + @slug]: languageId
-
 
 }
 
@@ -175,8 +174,6 @@ const data = {
   languages.map => ['projects/' + projectId + '/languages/' + @language_id]: true,
 
   ['users/' + uid + '/projects/' + projectId]: true,
-
-  ['homepage/projects/' + projectId]: true,
 
   ['projects_slugs_to_ids/' + @slug]: projectId
 

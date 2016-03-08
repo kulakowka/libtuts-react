@@ -12,14 +12,16 @@ users: {
     profile: {
       username: %username%
       fullName: %fullName%
+      homepage: %homepage%
+      about: %about%
       createdAt: Date
       updatedAt: Date 
     }
     // users/:user_id/tutorials
     tutorials: {
-      @tutoria_id: true
-      @tutoria_id: true
-      @tutoria_id: true
+      @tutorial_id: true
+      @tutorial_id: true
+      @tutorial_id: true
     }
     // users/:user_id/comments
     comments: {
@@ -45,14 +47,17 @@ tutorials: {
     // tutorials/:tutorial_id/data
     data: {
       title: %title%
-      content: %content%
-      contentHtml: %contentHtml%
       source: %source%
       domain: %domain%
       keywords: [%keyword%, %keyword%]
       createdAt: Date
       updatedAt: Date 
       author: @user_id
+    }
+    // tutorials/:tutorial_id/content
+    content: {
+      markdown: %content%
+      html: %contentHtml%
     }
     // tutorials/:tutorial_id/comments
     comments: {
@@ -83,12 +88,14 @@ comments: {
   @comment_id: {
     // comments/:comment_id/data
     data: {
-      content: %content%
-      contentHtml: %contentHtml%
       author: @user_id
       tutorial: @tutorial_id
       createdAt: Date
       updatedAt: Date 
+    }
+    content: {
+      markdown: %content%
+      html: %contentHtml%
     }
   }
 }
@@ -157,31 +164,6 @@ projects: {
       @language_id: true
       @language_id: true
     }
-  }
-}
-
-// homepage
-homepage: {
-  // Последние 20 уроков
-  // homepage/tutorials
-  tutorials: {
-    @tutoria_id: true
-    @tutoria_id: true
-    @tutoria_id: true
-  }
-  // 20 популярных проектов
-  // homepage/projects
-  projects: {
-    @project_id: true
-    @project_id: true
-    @project_id: true
-  }
-  // 20 популярных языков программирования
-  // homepage/languages
-  languages: {
-    @language_id: true
-    @language_id: true
-    @language_id: true
   }
 }
 

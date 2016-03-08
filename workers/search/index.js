@@ -1,43 +1,81 @@
 'use strict'
 
-const debug = require('debug')('app:worker:search')
-const firebase = require('../../utils/firebase')
-const Elastic = require('./elasticsearch')
+/**
+ * Для запуска этого воркера необходимо:
+ *
+ * 1. Убедиться что запущен elasticsearch
+ *    или вручную запустить его на локальной
+ *    тачке с помощью команды:
+ *
+ *    elasticsearch
+ *
+ * 2. Запустить скрипт воркера с помощью команды:
+ *
+ *    npm run worker:search
+ *
+ */
 
-// listen for changes to Firebase data
-const tutorialsRef = firebase.child('Tutorials')
-tutorialsRef.on('child_added', Elastic.createIndex)
-tutorialsRef.on('child_changed', Elastic.createOrUpdateIndex)
-tutorialsRef.on('child_removed', Elastic.removeIndex)
+var client = require('../utils/elasticsearch')
+var ref = require('../utils/firebase')
+var Indexer = require('./indexer')
 
-// Search Queue
+// Create Indexer for Tutorials
+var tutorialsIndexer = new Indexer({
+  ref: ref.child('tutorials'),
+  index: 'libtuts',
+  type: 'tutorials',
+  client
+})
 
-// listen for requests at https://<INSTANCE>.firebaseio.com/search/request
-var queue = firebase.child('search')
+// Create Indexer for Languages
+var languagesIndexer = new Indexer({
+  ref: ref.child('languages'),
+  index: 'libtuts',
+  type: 'languages',
+  client
+})
 
-queue.child('request').on('child_added', processRequest)
+// Create Indexer for Projects
+var projectsIndexer = new Indexer({
+  ref: ref.child('projects'),
+  index: 'libtuts',
+  type: 'projects',
+  client
+})
 
-function processRequest (snap) {
-  snap.ref().remove() // удаляет запрос из базы firebase как только мы его получили
+// Start indexing
+tutorialsIndexer.start()
+languagesIndexer.start()
+projectsIndexer.start()
 
-  var data = snap.val()
+// // Search Queue
 
-  // Query ElasticSearch
-  Elastic.client.search({
-    index: 'libtuts',
-    type: 'tutorials',
-    body: {
-      query: data.query
-    }
-  }).then((body) => {
-    queue.child('response/' + snap.key()).set({
-      tutorials: body.hits.hits.reduce((tutorials, hit) => {
-        tutorials[hit._id] = hit._source
-        return tutorials
-      }, {}),
-      total: body.hits.total
-    })
-  }).catch((error) => {
-    console.log(error)
-  })
-}
+// // listen for requests at https://<INSTANCE>.firebaseio.com/search/request
+// var queue = firebase.child('search')
+
+// queue.child('request').on('child_added', processRequest)
+
+// function processRequest (snap) {
+//   snap.ref().remove() // удаляет запрос из базы firebase как только мы его получили
+
+//   var data = snap.val()
+
+//   // Query ElasticSearch
+//   Elastic.client.search({
+//     index: 'libtuts',
+//     type: 'tutorials',
+//     body: {
+//       query: data.query
+//     }
+//   }).then((body) => {
+//     queue.child('response/' + snap.key()).set({
+//       tutorials: body.hits.hits.reduce((tutorials, hit) => {
+//         tutorials[hit._id] = hit._source
+//         return tutorials
+//       }, {}),
+//       total: body.hits.total
+//     })
+//   }).catch((error) => {
+//     console.log(error)
+//   })
+// }
