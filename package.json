@@ -13,9 +13,9 @@
     "gzip": "npm run gzip:js && npm run gzip:css",
     "gzip:css": "gzip -c static/dist/app.min.css > static/dist/app.min.css.gz",
     "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz",
-    "seed": "cross-env APP_ID=libtuts DEBUG=app:* node seed",
-    "worker:search": "cross-env APP_ID=libtuts DEBUG=app:* nodemon workers/search",
-    "worker:queue:tutorials": "cross-env APP_ID=libtuts DEBUG=app:* nodemon workers/queues/tutorials"
+    "worker:seed": "cross-env DEBUG=app:* node workers/seed",
+    "worker:indexer": "cross-env DEBUG=app:* node workers/indexer",
+    "worker:queue:tutorials": "cross-env DEBUG=app:* node workers/queues/tutorials"
   },
   "dependencies": {
     "babel-core": "^6.6.5",
@@ -26,6 +26,7 @@
     "elasticsearch": "^10.1.3",
     "express": "^4.13.4",
     "firebase": "^2.4.1",
+    "firebase-elasticsearch-indexer": "^1.0.0",
     "firebase-queue": "^1.2.1",
     "firebase-token-generator": "^2.0.0",
     "history": "^2.0.1",

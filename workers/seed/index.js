@@ -1,8 +1,8 @@
 'use strict'
 
-const debug = require('debug')('app:seed')
-const ref = require('../workers/utils/firebase')
-const data = require('./data')
+var debug = require('debug')('app:seed')
+var ref = require('../utils/firebase')
+var data = require('./data')
 
 ref
   .set(data)

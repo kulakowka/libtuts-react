@@ -11,7 +11,7 @@
  *
  * 2. Запустить скрипт воркера с помощью команды:
  *
- *    npm run worker:search
+ *    npm run worker:indexer
  *
  */
 
