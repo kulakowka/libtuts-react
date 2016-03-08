@@ -24,6 +24,8 @@ function TutorialsItem (props) {
           ? <a href={source} target='_blank'>{title}</a>
           : <Link to={url}>{title}</Link>
         }
+
+        {id}
       </h3>
       <div className={styles.meta}>
         <Link to={helpers.tutorialCommentsUrl(id)} title={numeral(commentsCount).format('0,0')}>
