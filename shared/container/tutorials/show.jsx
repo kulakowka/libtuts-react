@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../../utils/firebase'
+import firebase from '../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Show from '../../components/tutorials/show'
@@ -24,14 +24,15 @@ class TutorialContainer extends Component {
   }
 
   render () {
+    console.log('this.state.tutorial', this.state.tutorial)
+    console.log('this.state.comments', this.state.comments)
     return (
       <Row>
-        <Col size={8}>
-
+        <Col size={8} left>
           <Show tutorial={this.state.tutorial}/>
-
           <h2>Questions and discussion</h2>
           <Comments comments={this.state.comments}/>
+
         </Col>
       </Row>
     )

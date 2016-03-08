@@ -14,16 +14,21 @@
     "gzip:css": "gzip -c static/dist/app.min.css > static/dist/app.min.css.gz",
     "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz",
     "seed": "cross-env APP_ID=libtuts DEBUG=app:* node seed",
-    "worker:search": "cross-env APP_ID=libtuts DEBUG=app:* nodemon workers/search"
+    "worker:search": "cross-env APP_ID=libtuts DEBUG=app:* nodemon workers/search",
+    "worker:queue:tutorials": "cross-env APP_ID=libtuts DEBUG=app:* nodemon workers/queues/tutorials"
   },
   "dependencies": {
     "babel-core": "^6.6.5",
     "body-parser": "^1.15.0",
+    "config": "^1.19.0",
     "debug": "^2.2.0",
     "elasticsearch": "^10.1.3",
     "express": "^4.13.4",
     "firebase": "^2.4.1",
+    "firebase-queue": "^1.2.1",
+    "firebase-token-generator": "^2.0.0",
     "history": "^2.0.1",
+    "marked": "^0.3.5",
     "moment": "^2.11.2",
     "numeral": "^1.5.3",
     "react": "^0.14.7",

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import firebase from '../../../utils/firebase'
+import firebase from '../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Languages from '../../components/languages/list'

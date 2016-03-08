@@ -1,0 +1,64 @@
+/**
+ * Queue
+ */
+
+path /test_tasks {
+  read() { true }
+  write() { isServerWorker() }
+}
+
+/**
+ * Queue tasks
+ */
+
+path /queue/tasks {
+  read() { auth.canProcessTasks }
+  write() { auth.canAddTasks || auth.canProcessTasks }
+  index() { ['_state'] }
+}
+
+path /queue/tasks/{taskId} is Task;
+
+type Task {
+  taskNumber: Number
+  _state: String | Null
+  _state_changed: StateChangedNumber | Null
+  _owner: String | Null
+  _progress: ProgressNumber | Null
+  _error_details: ErrorDetailsObject | Null
+  validate() { auth.canAddTasks || auth.canProcessTasks }
+}
+
+type StateChangedNumber extends Number {
+  validate() { this === now || prior(this) === this}
+}
+
+type ProgressNumber extends Number {
+  validate() { this >= 0 && this <= 100 }
+}
+
+type ErrorDetailsObject extends Object {
+  error: String | Null
+  error_stack: String | Null
+  previous_state: String | Null
+  attempts: Number | Null
+}
+
+/**
+ * Queue specs
+ */
+
+path /queue/specs {
+  read() { auth.canAddSpecs || auth.canProcessTasks }
+  write() { auth.canAddSpecs }
+}
+
+path /queue/specs/{specId} is Spec;
+
+type Spec {
+  start_state: String | Null
+  in_progress_state: String | Null
+  finished_state: String | Null
+  error_state: String | Null
+  timeout: Number | Null
+}

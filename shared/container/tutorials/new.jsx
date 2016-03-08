@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../../utils/firebase'
-import helpers from '../../../utils/helpers'
+import firebase from '../../utils/firebase'
+import Firebase from 'firebase'
+import helpers from '../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Form from '../../components/tutorials/form'
@@ -26,14 +27,25 @@ class NewTutorialContainer extends Component {
 
     this.setState({error: null, loading: true})
 
-    firebase
-    .child('queue/tutorials').push(data)
-    .then(this.success.bind(this))
+    const taskRef = firebase.child('queue/tutorials/tasks').push()
+
+    // add author to data
+    data.author = firebase.getAuth().password.email.split('@')[0]
+
+    taskRef.set(data)
+    .then(this.success.bind(this, taskRef))
     .catch(this.fail.bind(this))
   }
 
-  success (snap) {
-    this.context.router.push(helpers.tutorialUrl(snap.key()))
+  success (taskRef, snap) {
+    taskRef.on('value', (snap) => {
+      let key = snap.val().key
+      if (key) {
+        taskRef.off()
+        console.log('можно редиректить на туториал /tutorials/%s ', key)
+        this.context.router.push(helpers.tutorialUrl(key))
+      }
+    })
   }
 
   fail (error) {

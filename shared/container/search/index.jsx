@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import firebase from '../../../utils/firebase'
-import helpers from '../../../utils/helpers'
+import firebase from '../../utils/firebase'
+import helpers from '../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Tutorials from '../../components/tutorials/list'

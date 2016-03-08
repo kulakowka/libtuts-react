@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import styles from './about.styl'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function AboutLanguage (props) {

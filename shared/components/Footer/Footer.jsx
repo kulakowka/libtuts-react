@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import styles from './footer.styl'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 
 function Footer () {
   const year = new Date().getFullYear()

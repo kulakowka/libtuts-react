@@ -5,19 +5,19 @@ import { Link } from 'react-router'
 import styles from '../forms/default.styl'
 import Section from '../section/section'
 import Button from '../button/button'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 
 class TutorialForm extends Component {
   constructor (props, context) {
     super(props, context)
 
     this.state = {
-      title: '',
-      source: '',
-      content: '',
-      keywords: [],
-      languages: {},
-      projects: {}
+      // title: '',
+      // source: '',
+      // content: '',
+      // keywords: [],
+      // languages: {},
+      // projects: {}
     }
   }
 

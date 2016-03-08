@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './about.styl'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 import Section from '../section/section'
 
 function AboutProject (props) {

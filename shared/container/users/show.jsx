@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../../utils/firebase'
+import firebase from '../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import About from '../../components/users/about'

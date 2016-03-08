@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './show.styl'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 import moment from 'moment'
 import Button from '../button/button'
 import Section from '../section/section'
@@ -24,8 +24,8 @@ function Tutorial (props) {
     keywords
   } = props.tutorial
 
-  languages = helpers.toArray(languages)
-  projects = helpers.toArray(projects)
+  if (languages) languages = helpers.toArray(languages)
+  if (projects) projects = helpers.toArray(projects)
 
   const content = () => ({__html: contentHtml})
 
@@ -66,7 +66,7 @@ function Tutorial (props) {
             <Link to={helpers.userUrl(author)}>{author}</Link>
           </dd>
 
-          {languages.length ? <span>
+          {languages && languages.length ? <span>
             <dt>Languages:</dt>
             <dd>
               {helpers.tagsByCommas(languages, (language, i) =>
@@ -76,7 +76,7 @@ function Tutorial (props) {
             </dd>
           </span> : null}
 
-          {projects.length ? <span>
+          {projects && projects.length ? <span>
             <dt>Projects:</dt>
             <dd>
               {helpers.tagsByCommas(projects, (project, i) =>
@@ -86,7 +86,7 @@ function Tutorial (props) {
             </dd>
           </span> : null}
 
-          {keywords.length ? <span>
+          {keywords && keywords.length ? <span>
             <dt>Keywords:</dt>
             <dd>
               {helpers.tagsByCommas(keywords, (keyword, i) =>

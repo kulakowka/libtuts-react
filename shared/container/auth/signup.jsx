@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../../utils/firebase'
+import firebase from '../../utils/firebase'
 import { Link } from 'react-router'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
 import Form from '../../components/auth/forms/signup'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 
 class SignInContainer extends Component {
   constructor (props, context) {

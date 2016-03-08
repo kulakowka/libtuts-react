@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './item.styl'
-import helpers from '../../../utils/helpers'
+import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function ProjectItem (props) {
