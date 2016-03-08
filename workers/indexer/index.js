@@ -17,7 +17,7 @@
 
 var client = require('../utils/elasticsearch')
 var ref = require('../utils/firebase')
-var Indexer = require('./indexer')
+var Indexer = require('firebase-elasticsearch-indexer')
 
 // Create Indexer for Tutorials
 var tutorialsIndexer = new Indexer({
