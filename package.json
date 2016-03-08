@@ -15,6 +15,7 @@
     "gzip:js": "gzip -c static/dist/bundle.min.js > static/dist/bundle.min.js.gz",
     "worker:seed": "DEBUG=app:* node workers/seed",
     "worker:indexer": "DEBUG=app:*,indexer node workers/indexer",
+    "worker:queue:search": "DEBUG=app:*,searchWorker node workers/queues/search",
     "worker:queue:tutorials": "DEBUG=app:* node workers/queues/tutorials"
   },
   "dependencies": {
@@ -26,7 +27,7 @@
     "elasticsearch": "^10.1.3",
     "express": "^4.13.4",
     "firebase": "^2.4.1",
-    "firebase-elasticsearch-indexer": "^1.0.0",
+    "firebase-elasticsearch-indexer": "^1.0.2",
     "firebase-queue": "^1.2.1",
     "firebase-token-generator": "^2.0.0",
     "history": "^2.0.1",

@@ -22,7 +22,7 @@ var Indexer = require('firebase-elasticsearch-indexer')
 // Create Indexer for Tutorials
 var tutorialsIndexer = new Indexer({
   ref: ref.child('tutorials'),
-  index: 'libtuts',
+  index: 'search',
   type: 'tutorials',
   client
 })
@@ -30,7 +30,7 @@ var tutorialsIndexer = new Indexer({
 // Create Indexer for Languages
 var languagesIndexer = new Indexer({
   ref: ref.child('languages'),
-  index: 'libtuts',
+  index: 'search',
   type: 'languages',
   client
 })
@@ -38,7 +38,7 @@ var languagesIndexer = new Indexer({
 // Create Indexer for Projects
 var projectsIndexer = new Indexer({
   ref: ref.child('projects'),
-  index: 'libtuts',
+  index: 'search',
   type: 'projects',
   client
 })
@@ -47,35 +47,3 @@ var projectsIndexer = new Indexer({
 tutorialsIndexer.start()
 languagesIndexer.start()
 projectsIndexer.start()
-
-// // Search Queue
-
-// // listen for requests at https://<INSTANCE>.firebaseio.com/search/request
-// var queue = firebase.child('search')
-
-// queue.child('request').on('child_added', processRequest)
-
-// function processRequest (snap) {
-//   snap.ref().remove() // удаляет запрос из базы firebase как только мы его получили
-
-//   var data = snap.val()
-
-//   // Query ElasticSearch
-//   Elastic.client.search({
-//     index: 'libtuts',
-//     type: 'tutorials',
-//     body: {
-//       query: data.query
-//     }
-//   }).then((body) => {
-//     queue.child('response/' + snap.key()).set({
-//       tutorials: body.hits.hits.reduce((tutorials, hit) => {
-//         tutorials[hit._id] = hit._source
-//         return tutorials
-//       }, {}),
-//       total: body.hits.total
-//     })
-//   }).catch((error) => {
-//     console.log(error)
-//   })
-// }

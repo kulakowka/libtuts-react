@@ -5,7 +5,7 @@ import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Tutorials from '../../components/tutorials/list'
 
-const queue = firebase.child('search')
+const queue = firebase.child('search/tutorials')
 
 class SearchContainer extends Component {
   constructor (props, context) {
@@ -17,9 +17,7 @@ class SearchContainer extends Component {
   }
 
   componentDidMount () {
-    const reqRef = queue.child('request').push({
-      index: 'libtuts',
-      type: 'tutorials',
+    const reqRef = queue.child('requests').push({
       query: {
         match: {
           keywords: this.props.location.query.keyword
@@ -28,13 +26,14 @@ class SearchContainer extends Component {
     })
 
     const callback = (data) => {
-      data.tutorials = helpers.addKey(data.tutorials)
-      this.setState(data)
+      console.log('show tutorials', data)
+      // data.tutorials = helpers.addKey(data.tutorials)
+      // this.setState(data)
     }
 
     // this.bindAsObject(queue.child('response/' + reqRef.key() + '/total'), 'total')
     // this.bindAsArray(queue.child('response/' + reqRef.key() + '/tutorials'), 'tutorials')
-    queue.child('response/' + reqRef.key()).on('value', function fn (snap) {
+    queue.child('responses/' + reqRef.key()).on('value', function fn (snap) {
       if (snap.val()) {     // wait for data
         snap.ref().off('value', fn) // stop listening
         snap.ref().remove()         // clear the queue
