@@ -6,6 +6,7 @@ import styles from '../forms/default.styl'
 import Section from '../section/section'
 import Button from '../button/button'
 import helpers from '../../utils/helpers'
+import Select from '../select/select'
 
 class TutorialForm extends Component {
   constructor (props, context) {
@@ -16,9 +17,27 @@ class TutorialForm extends Component {
       // source: '',
       // content: '',
       // keywords: [],
-      languages: ['javascript']
-      // projects: {}
+      languages: [],
+      projects: [],
+      allLanguages: [
+        { value: 'javascript', label: 'JavaScript' },
+        { value: 'ruby', label: 'Ruby' },
+        { value: 'php', label: 'PHP' },
+        { value: 'go', label: 'Go' }
+      ],
+      allProjects: [
+        { value: 'react', label: 'React.js' },
+        { value: 'babel', label: 'Babel.js' }
+      ]
     }
+  }
+
+  changeProjects (projects) {
+    this.setState({projects})
+  }
+
+  changeLanguages (languages) {
+    this.setState({languages})
   }
 
   render () {
@@ -47,10 +66,23 @@ class TutorialForm extends Component {
           </div>
 
           <div className={styles.field}>
-            <select type='text' multiple valueLink={this.linkState('languages')} placeholder='Languages'>
-              <option value='javascript'>JavaScript</option>
-              <option value='ruby'>Ruby</option>
-            </select>
+            <Select
+              multi
+              value={this.state.languages}
+              name='languages'
+              options={this.state.allLanguages}
+              onChange={this.changeLanguages.bind(this)}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <Select
+              multi
+              value={this.state.projects}
+              name='projects'
+              options={this.state.allProjects}
+              onChange={this.changeProjects.bind(this)}
+            />
           </div>
 
           <div className={styles.field}>
