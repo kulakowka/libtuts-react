@@ -35,14 +35,18 @@ var publishTutorialQueue = new Queue(queueRef, {'specId': 'publish_tutorial'},
 
     data = processTutorial(data)
 
-    tutorialsRef
-    .child(key)
-    .set(data)
+    // Create the data we want to update
+    let updatedUserData = {}
+    updatedUserData['_user_tutorials/' + data.author + '/' + key] = data
+    updatedUserData['Tutorials/' + key] = data
+
+    ref
+    .update(updatedUserData)
     .then(() => {
       resolve({key})
     })
     .catch(reject)
-    console.log('publish_tutorial', data)
+    debug('publish_tutorial: %s', key)
   }
 )
 
@@ -52,7 +56,7 @@ var publishTutorialQueue = new Queue(queueRef, {'specId': 'publish_tutorial'},
 var publishTutorialDoneQueue = new Queue(queueRef, {'specId': 'publish_tutorial_done'},
   (data, progress, resolve, reject) => {
     resolve(data)
-    console.log('publish_tutorial_done', data)
+    debug('publish_tutorial_done: %s', data.key)
   }
 )
 

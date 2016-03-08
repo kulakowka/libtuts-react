@@ -25,6 +25,8 @@ class NewTutorialContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
+    console.log(data)
+
     this.setState({error: null, loading: true})
 
     const taskRef = firebase.child('queue/tutorials/tasks').push()
@@ -42,7 +44,6 @@ class NewTutorialContainer extends Component {
       let key = snap.val().key
       if (key) {
         taskRef.off()
-        console.log('можно редиректить на туториал /tutorials/%s ', key)
         this.context.router.push(helpers.tutorialUrl(key))
       }
     })

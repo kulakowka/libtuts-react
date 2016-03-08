@@ -16,7 +16,7 @@ class TutorialForm extends Component {
       // source: '',
       // content: '',
       // keywords: [],
-      // languages: {},
+      languages: ['javascript']
       // projects: {}
     }
   }
@@ -44,6 +44,13 @@ class TutorialForm extends Component {
 
           <div className={styles.field}>
             <input type='text' valueLink={this.linkState('keywords')} placeholder='Keywords' autoComplete='off'/>
+          </div>
+
+          <div className={styles.field}>
+            <select type='text' multiple valueLink={this.linkState('languages')} placeholder='Languages'>
+              <option value='javascript'>JavaScript</option>
+              <option value='ruby'>Ruby</option>
+            </select>
           </div>
 
           <div className={styles.field}>

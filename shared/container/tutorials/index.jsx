@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import firebase from '../../utils/firebase'
+import ref from '../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Tutorials from '../../components/tutorials/list'
@@ -13,10 +13,12 @@ class TutorialsContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('Tutorials'), 'tutorials')
+    const tutorialsRef = ref.child('Tutorials')
+    this.bindAsArray(tutorialsRef, 'tutorials')
   }
 
   render () {
+    this.state.tutorials.reverse()
     return <Tutorials tutorials={this.state.tutorials}/>
   }
 }

@@ -24,8 +24,6 @@ class TutorialContainer extends Component {
   }
 
   render () {
-    console.log('this.state.tutorial', this.state.tutorial)
-    console.log('this.state.comments', this.state.comments)
     return (
       <Row>
         <Col size={8} left>
