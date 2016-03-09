@@ -13,7 +13,7 @@ class TutorialsContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(ref.child('tutorials'), 'tutorials')
+    this.bindAsArray(ref.child('tutorials').limitToFirst(20), 'tutorials')
   }
 
   render () {

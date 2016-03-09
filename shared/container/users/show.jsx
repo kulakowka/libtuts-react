@@ -19,21 +19,27 @@ class UserContainer extends Component {
   componentDidMount () {
     const id = this.props.params.id
 
-    this.bindAsObject(firebase.child('Users/' + id), 'user')
-    this.bindAsArray(firebase.child('_user_tutorials/' + id), 'tutorials')
-    this.bindAsArray(firebase.child('_user_comments/' + id), 'comments')
+    this.bindAsObject(firebase.child('users/' + id), 'user')
+    this.bindAsArray(firebase.child('user_tutorials/' + id).limitToFirst(10), 'tutorials')
+    this.bindAsArray(firebase.child('user_comments/' + id).limitToFirst(10), 'comments')
   }
 
   render () {
     return (
       <div>
-        <About user={this.state.user}/>
+        <About {...this.state.user}/>
 
-        <h2>Tutorials</h2>
-        <Tutorials tutorials={this.state.tutorials}/>
+        {this.state.tutorials.length
+          ? <span>
+            <h2>Tutorials</h2>
+            <Tutorials tutorials={this.state.tutorials}/>
+          </span> : null}
 
-        <h2>Comments</h2>
-        <Comments comments={this.state.comments}/>
+        {this.state.comments.length
+          ? <span>
+            <h2>Comments</h2>
+            <Comments comments={this.state.comments}/>
+          </span> : null}
 
       </div>
     )

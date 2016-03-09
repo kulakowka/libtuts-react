@@ -18,7 +18,7 @@ class ProjectContainer extends Component {
     const id = this.props.params.id
 
     this.bindAsObject(firebase.child('projects/' + id), 'project')
-    this.bindAsArray(firebase.child('project_tutorials/' + id), 'tutorials')
+    this.bindAsArray(firebase.child('project_tutorials/' + id).limitToFirst(10), 'tutorials')
   }
 
   render () {

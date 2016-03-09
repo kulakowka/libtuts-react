@@ -4,32 +4,34 @@ import styles from './about.styl'
 import Section from '../section/section'
 
 function AboutUser (props) {
-  const id = props.user['.key']
-  const {name, homepage, about} = props.user
+  const {
+    username,
+    fullName,
+    homepage,
+    about
+  } = props
 
   return (
-    <div className={styles.aboutUser} key={id}>
-      <h1>{name}</h1>
+    <div className={styles.aboutUser} key={username}>
+      <h1>{fullName}</h1>
 
       {about
         ? <p className={styles.about}>{about}</p>
         : null
       }
 
-      <Section>
+      {homepage ? <Section>
         <dl className={styles.meta}>
-          {homepage
-            ? <span><dt>Homepage:</dt><dd><Link to={homepage}>{homepage}</Link></dd></span>
-            : null
-          }
+          <span><dt>Homepage:</dt><dd><Link to={homepage}>{homepage}</Link></dd></span>
         </dl>
-      </Section>
+      </Section> : null}
+
     </div>
   )
 }
 
-AboutUser.propTypes = {
-  user: PropTypes.object.isRequired
-}
+// AboutUser.propTypes = {
+//   user: PropTypes.object.isRequired
+// }
 
 export default AboutUser

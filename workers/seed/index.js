@@ -12,11 +12,11 @@ let seeder = new Seeder({ref})
 // Generate fake data
 async.series([
   seeder.createInfoPages(),
-  seeder.createFakeUsers(20),
-  seeder.createFakeLanguages(20),
-  seeder.createFakeProjects(20),
-  seeder.createFakeTutorials(20),
-  seeder.createFakeComments(20)
+  seeder.createFakeUsers(30),
+  seeder.createFakeLanguages(30),
+  seeder.createFakeProjects(30),
+  seeder.createFakeTutorials(100),
+  seeder.createFakeComments(500)
 ], (err, results) => {
   if (err) return debug(err.message, err)
 

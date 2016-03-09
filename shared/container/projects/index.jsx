@@ -13,7 +13,7 @@ class ProjectsContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(ref.child('projects'), 'projects')
+    this.bindAsArray(ref.child('projects').limitToFirst(20), 'projects')
   }
 
   render () {

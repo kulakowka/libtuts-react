@@ -22,6 +22,8 @@ class Seeder {
   getFakeUser () {
     let fullName = faker.name.firstName() + ' ' + faker.name.lastName()
     let username = fullName.toLowerCase().replace(/\W/g, '-')
+    let about = faker.lorem.paragraph()
+    let homepage = faker.internet.url()
 
     if (this.collections.users[username]) {
       return this.getFakeUser()
@@ -30,13 +32,15 @@ class Seeder {
     return {
       username,
       fullName,
+      about,
+      homepage,
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime()
     }
   }
 
   getFakeLanguage () {
-    let name = faker.hacker.abbreviation()
+    let name = faker.name.firstName() + ' ' + faker.hacker.abbreviation()
     let slug = name.toLowerCase().replace(/\W/g, '-')
 
     if (this.collections.languages[slug]) {
@@ -47,14 +51,14 @@ class Seeder {
   }
 
   getFakeProject (author) {
-    let name = faker.commerce.product()
+    let name = faker.name.firstName() + ' ' + faker.commerce.product()
     let slug = name.toLowerCase().replace(/\W/g, '-')
 
     if (this.collections.projects[slug]) {
       return this.getFakeProject(author)
     }
 
-    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 5))
+    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 15))
 
     languages = languages.reduce((obj, item) => {
       obj[item.slug] = item
@@ -112,7 +116,7 @@ class Seeder {
   }
 
   getFakeLanguages (count) {
-    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 3))
+    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 15))
     let data = {}
     languages.forEach((language) => {
       data[language.slug] = _.pick(language, ['slug', 'name'])
@@ -121,7 +125,7 @@ class Seeder {
   }
 
   getFakeProjects (count) {
-    let projects = _.sampleSize(_.toArray(this.collections.projects), _.random(0, 3))
+    let projects = _.sampleSize(_.toArray(this.collections.projects), _.random(0, 15))
     let data = {}
     projects.forEach((project) => {
       data[project.slug] = _.pick(project, ['slug', 'name'])
@@ -187,8 +191,8 @@ class Seeder {
         let author = _.pick(user, ['username', 'fullName'])
         let tutorial = this.getFakeTutorial(author)
         let content = this.getFakeContent()
-        let languages = this.getFakeLanguages(_.random(0, 5))
-        let projects = this.getFakeProjects(_.random(0, 5))
+        let languages = this.getFakeLanguages(_.random(0, 15))
+        let projects = this.getFakeProjects(_.random(0, 15))
 
         this.collections.tutorials[tutorial.id] = tutorial
 
