@@ -5,13 +5,13 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function ProjectItem (props) {
-  const id = props.data.slug
+  const id = props.slug
   const url = helpers.projectUrl(id)
   const imgUrl = helpers.picUrl(id)
   const {
     name,
     tutorialsCount
-  } = props.data
+  } = props
 
   //
   return (

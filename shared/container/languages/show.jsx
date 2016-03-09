@@ -19,9 +19,9 @@ class LanguageContainer extends Component {
   componentDidMount () {
     const id = this.props.params.id
 
-    this.bindAsObject(firebase.child('Languages/' + id), 'language')
-    this.bindAsArray(firebase.child('_language_tutorials/' + id), 'tutorials')
-    this.bindAsArray(firebase.child('_language_projects/' + id), 'projects')
+    this.bindAsObject(firebase.child('languages/' + id), 'language')
+    this.bindAsArray(firebase.child('language_tutorials/' + id), 'tutorials')
+    this.bindAsArray(firebase.child('language_projects/' + id), 'projects')
   }
 
   render () {

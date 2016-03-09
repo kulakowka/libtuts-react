@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import firebase from '../../utils/firebase'
+import ref from '../../utils/firebase'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Projects from '../../components/projects/list'
@@ -13,7 +13,7 @@ class ProjectsContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('Projects'), 'projects')
+    this.bindAsArray(ref.child('projects'), 'projects')
   }
 
   render () {

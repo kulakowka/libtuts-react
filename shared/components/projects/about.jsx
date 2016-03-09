@@ -5,7 +5,7 @@ import helpers from '../../utils/helpers'
 import Section from '../section/section'
 
 function AboutProject (props) {
-  const id = props.project['.key']
+  const id = props.slug
 
   if (!id) return <p>Loading...</p>
 
@@ -14,12 +14,12 @@ function AboutProject (props) {
   let {
     name,
     description,
-    languages,
     homepage,
-    repository,
-    keywords
-  } = props.project
-  languages = helpers.toArray(languages)
+    repository
+  } = props
+
+  let languages = helpers.tagsByCommas(helpers.toArray(props.languages), renderLanguage)
+  let keywords = helpers.tagsByCommas(props.keywords, renderKeyword)
 
   return (
     <div className={styles.about} key={id}>
@@ -49,19 +49,13 @@ function AboutProject (props) {
             <dd><a href={repository} target='_blank'>{repository}</a></dd>
           </span> : null}
 
-          {languages.length ? <span>
-            <dt>Languages:</dt>
-            <dd>
-              {helpers.tagsByCommas(languages, (language, i) => <Link to={helpers.languageUrl(language.key)} key={i}>{language.value}</Link>)}
-            </dd>
-          </span> : null}
+          {languages.length
+            ? <span><dt>Languages:</dt><dd>{languages}</dd></span>
+            : null}
 
-          {keywords.length ? <span>
-            <dt>Keywords:</dt>
-            <dd>
-              {helpers.tagsByCommas(keywords, (keyword, i) => <Link to={helpers.keywordUrl(keyword)} key={i}>{keyword}</Link>)}
-            </dd>
-          </span> : null}
+          {keywords.length
+            ? <span><dt>Keywords:</dt><dd>{keywords}</dd></span>
+            : null}
         </dl>
       </Section>
     </div>
@@ -78,3 +72,19 @@ function AboutProject (props) {
 // }
 
 export default AboutProject
+
+function renderLanguage (language) {
+  return (
+    <Link to={helpers.languageUrl(language.slug)} key={language.slug}>
+      {language.name}
+    </Link>
+  )
+}
+
+function renderKeyword (keyword, index) {
+  return (
+    <Link to={helpers.keywordUrl(keyword)} key={index}>
+      {keyword}
+    </Link>
+  )
+}

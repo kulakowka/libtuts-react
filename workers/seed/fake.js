@@ -19,47 +19,68 @@ class Seeder {
     })
   }
 
-  getFakeUser (uid) {
+  getFakeUser () {
+    let fullName = faker.name.firstName() + ' ' + faker.name.lastName()
+    let username = fullName.toLowerCase().replace(/\W/g, '-')
+
+    if (_.findIndex(this.collections.users, {username}) !== -1) {
+      return this.getFakeUser()
+    }
+
     return {
-      uid,
-      username: faker.internet.userName().toLowerCase().replace(/\W/g, '-'),
-      fullName: faker.name.firstName() + ' ' + faker.name.lastName(),
+      username,
+      fullName,
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime()
     }
   }
 
-  getFakeLanguage (id) {
-    let name = faker.hacker.noun()
+  getFakeLanguage () {
+    let name = faker.hacker.abbreviation()
+    let slug = name.toLowerCase().replace(/\W/g, '-')
 
-    return {
-      id,
-      name,
-      slug: name.toLowerCase().replace(/\W/g, '-')
+    if (_.findIndex(this.collections.languages, {slug}) !== -1) {
+      return this.getFakeLanguage()
     }
+
+    return {name, slug}
   }
 
-  getFakeProject (id, author) {
-    let name = faker.hacker.verb()
+  getFakeProject (author) {
+    let name = faker.commerce.product()
+    let slug = name.toLowerCase().replace(/\W/g, '-')
+
+    if (_.findIndex(this.collections.projects, {slug}) !== -1) {
+      return this.getFakeProject(author)
+    }
+
+    let languages = _.sampleSize(this.collections.languages, _.random(0, 5))
+
+    languages = languages.reduce((obj, item) => {
+      obj[item.slug] = item
+      return obj
+    }, {})
 
     return {
-      id,
       name,
-      slug: name.toLowerCase().replace(/\W/g, '-'),
+      slug,
+      author,
+      languages,
       description: faker.lorem.paragraph(),
       homepage: faker.internet.url(),
       repository: faker.internet.url(),
       keywords: faker.lorem.words(),
-      author,
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime()
     }
   }
 
-  getFakeTutorial (id, author) {
+  getFakeTutorial (author) {
+    let id = faker.random.uuid()
+
     return {
       id,
-      title: faker.name.title(),
+      title: faker.hacker.phrase(),
       source: faker.internet.url(),
       domain: faker.internet.domainName(),
       keywords: faker.lorem.words(),
@@ -69,18 +90,20 @@ class Seeder {
     }
   }
 
-  getFakeComment (id, author, tutorial) {
+  getFakeComment (author, tutorial) {
+    let id = faker.random.uuid()
+
     return {
       id,
       tutorial,
       author,
-      content: this.getFakeTutorialContent(),
+      content: this.getFakeContent(),
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime()
     }
   }
 
-  getFakeTutorialContent () {
+  getFakeContent () {
     let text = faker.lorem.paragraphs()
     return {
       markdown: text,
@@ -88,25 +111,20 @@ class Seeder {
     }
   }
 
-  getFakeTutorialLanguages (count) {
+  getFakeLanguages (count) {
     let languages = _.sampleSize(this.collections.languages, _.random(0, 3))
-
     let data = {}
-
     languages.forEach((language) => {
-      data[language.id] = true
+      data[language.slug] = _.pick(language, ['slug', 'name'])
     })
-
     return data
   }
 
-  getFakeTutorialProjects (count) {
+  getFakeProjects (count) {
     let projects = _.sampleSize(this.collections.projects, _.random(0, 3))
-
     let data = {}
-
     projects.forEach((project) => {
-      data[project.id] = true
+      data[project.slug] = _.pick(project, ['slug', 'name'])
     })
 
     return data
@@ -116,74 +134,70 @@ class Seeder {
 
   createFakeUsers (count) {
     for (let i = 0; i < count; i++) {
-      let uid = faker.random.uuid()
-      let user = this.getFakeUser(uid)
+      let user = this.getFakeUser()
 
       this.collections.users.push(user)
 
-      this.data['users/' + uid + '/data'] = user
-      this.data['users_usernames_to_uids/' + user.username] = uid
+      this.data['users/' + user.username] = user
     }
     return this
   }
 
   createFakeLanguages (count) {
     for (let i = 0; i < count; i++) {
-      let id = faker.random.uuid()
-      let language = this.getFakeLanguage(id)
+      let language = this.getFakeLanguage()
 
       this.collections.languages.push(language)
 
-      this.data['languages/' + id + '/data'] = language
-      this.data['languages_slugs_to_ids/' + language.slug] = id
+      this.data['languages/' + language.slug] = language
     }
     return this
   }
 
   createFakeProjects (count) {
     for (let i = 0; i < count; i++) {
-      let id = faker.random.uuid()
-      let uid = _.sample(this.collections.users).uid
-      let project = this.getFakeProject(id, uid)
-      let projectLanguages = this.getFakeTutorialLanguages(_.random(0, 5))
+      let user = _.sample(this.collections.users)
+      let author = _.pick(user, ['username', 'fullName'])
+      let project = this.getFakeProject(author)
+      let projectShort = _.pick(project, ['slug', 'name'])
 
       this.collections.projects.push(project)
 
-      this.data['projects/' + id + '/data'] = project
-      this.data['projects_slugs_to_ids/' + project.slug] = id
+      this.data['projects/' + project.slug] = project
 
-      Object.keys(projectLanguages).map((languageId) => {
-        this.data['projects/' + id + '/languages/' + languageId] = true
+      this.data['user_projects/' + author.username + '/' + project.slug] = projectShort
+
+      Object.keys(project.languages).map((languageId) => {
+        this.data['language_projects/' + languageId + '/' + project.slug] = projectShort
       })
-
-      this.data['users/' + uid + '/projects/' + id] = true
     }
     return this
   }
 
   createFakeTutorials (count) {
     for (let i = 0; i < count; i++) {
-      let author = _.sample(this.collections.users)
-      let tutorialId = faker.random.uuid()
-      let tutorial = this.getFakeTutorial(tutorialId, author)
-      let tutorialContent = this.getFakeTutorialContent()
-      let tutorialLanguages = this.getFakeTutorialLanguages(_.random(0, 5))
-      let tutorialProjects = this.getFakeTutorialProjects(_.random(0, 5))
+      let user = _.sample(this.collections.users)
+      let author = _.pick(user, ['username', 'fullName'])
+      let tutorial = this.getFakeTutorial(author)
+      let content = this.getFakeContent()
+      let languages = this.getFakeLanguages(_.random(0, 5))
+      let projects = this.getFakeProjects(_.random(0, 5))
 
       this.collections.tutorials.push(tutorial)
 
-      this.data['tutorials/' + tutorialId + '/data'] = tutorial
-      this.data['tutorials/' + tutorialId + '/content'] = tutorialContent
-      this.data['tutorials/' + tutorialId + '/languages'] = tutorialLanguages
-      this.data['tutorials/' + tutorialId + '/projects'] = tutorialProjects
-      this.data['users/' + author.uid + '/tutorials/' + tutorialId + '/projects'] = true
+      this.data['tutorials/' + tutorial.id] = tutorial
+      this.data['tutorial_content/' + tutorial.id] = content
+      this.data['tutorial_languages/' + tutorial.id] = languages
+      this.data['tutorial_projects/' + tutorial.id] = projects
 
-      Object.keys(tutorialLanguages).map((languageId) => {
-        this.data['languages/' + languageId + '/tutorials/' + tutorialId] = true
+      this.data['user_tutorials/' + author.username + '/' + tutorial.id] = tutorial
+
+      Object.keys(languages).map((languageId) => {
+        this.data['language_tutorials/' + languageId + '/' + tutorial.id] = tutorial
       })
 
-      Object.keys(tutorialProjects).map((projectId) => {
-        this.data['projects/' + projectId + '/tutorials/' + tutorialId] = true
+      Object.keys(projects).map((projectId) => {
+        this.data['project_tutorials/' + projectId + '/' + tutorial.id] = tutorial
       })
     }
     return this
@@ -191,16 +205,16 @@ class Seeder {
 
   createFakeComments (count) {
     for (let i = 0; i < count; i++) {
-      let tutorialId = _.sample(this.collections.tutorials).id
-      let uid = _.sample(this.collections.users).uid
-      let id = faker.random.uuid()
-      let comment = this.getFakeComment(id, uid, tutorialId)
+      let user = _.sample(this.collections.users)
+      let author = _.pick(user, ['username', 'fullName'])
+      let tutorial = _.sample(this.collections.tutorials)
+      let comment = this.getFakeComment(author, tutorial.id)
 
       this.collections.comments.push(comment)
 
-      this.data['comments/' + id + '/data'] = comment
-      this.data['users/' + uid + '/comments/' + id] = true
-      this.data['tutorials/' + tutorialId + '/comments/' + id] = true
+      this.data['comments/' + comment.id] = comment
+      this.data['user_comments/' + author.username + '/' + comment.id] = comment
+      this.data['tutorial_comments/' + tutorial.id + '/' + comment.id] = comment
     }
     return this
   }

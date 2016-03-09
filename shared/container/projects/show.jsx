@@ -17,14 +17,14 @@ class ProjectContainer extends Component {
   componentDidMount () {
     const id = this.props.params.id
 
-    this.bindAsObject(firebase.child('Projects/' + id), 'project')
-    this.bindAsArray(firebase.child('_project_tutorials/' + id), 'tutorials')
+    this.bindAsObject(firebase.child('projects/' + id), 'project')
+    this.bindAsArray(firebase.child('project_tutorials/' + id), 'tutorials')
   }
 
   render () {
     return (
       <div>
-        <About project={this.state.project}/>
+        <About {...this.state.project}/>
 
         <h2>Popular {this.state.project.name} Tutorials</h2>
         <Tutorials tutorials={this.state.tutorials}/>

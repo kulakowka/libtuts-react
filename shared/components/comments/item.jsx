@@ -6,33 +6,33 @@ import moment from 'moment'
 import Section from '../section/section'
 
 function CommentsItem (props) {
-  const id = props['.key']
+  const id = props.id
 
   const {
-    contentHtml,
+    content,
     author,
     createdAt,
     tutorial
   } = props
 
-  const content = () => ({__html: contentHtml})
+  const getContent = () => ({__html: content.html})
 
   return (
     <Section className={styles.item} id={'comment_' + id} key={id}>
       <div className={styles.meta}>
-        <Link className={styles.creator} to={helpers.userUrl(author)}>{author}</Link>
+        <Link className={styles.creator} to={helpers.userUrl(author.username)}>{author.fullName}</Link>
         <Link to={helpers.commentUrl(tutorial, id)}>{moment(createdAt).fromNow()}</Link>
       </div>
-      <div className={styles.content} dangerouslySetInnerHTML={content()}/>
+      <div className={styles.content} dangerouslySetInnerHTML={getContent()}/>
     </Section>
   )
 }
 
-CommentsItem.propTypes = {
-  contentHtml: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  createdAt: PropTypes.number.isRequired,
-  tutorial: PropTypes.string.isRequired
-}
+// CommentsItem.propTypes = {
+//   contentHtml: PropTypes.string.isRequired,
+//   author: PropTypes.string.isRequired,
+//   createdAt: PropTypes.number.isRequired,
+//   tutorial: PropTypes.string.isRequired
+// }
 
 export default CommentsItem

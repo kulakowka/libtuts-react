@@ -81,16 +81,8 @@ const helpers = {
     return '/info/' + page
   },
 
-  /**
-   * toArray: Return an array from object
-   *
-   * > toArray({node: true, js: true})
-   * [{key: 'node', value: true}, {key: 'js', value: true}]
-   */
   toArray (obj) {
-    return Object.keys(obj).map((key) => {
-      return {key, value: obj[key]}
-    })
+    return obj ? Object.keys(obj).map((key) => obj[key]) : []
   },
 
   addKey (obj) {

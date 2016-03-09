@@ -17,7 +17,7 @@ function Header (props, context) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link to='/' className={styles.siteName}>Library Tutorials</Link>
+        <Link to='/' className={styles.siteName}>The New York Times</Link>
 
         <nav className={styles.mainMenu}>
           <Link className={styles.item} to={helpers.tutorialsUrl()}>Tutorials</Link>

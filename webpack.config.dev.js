@@ -38,7 +38,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        BASE_URL: JSON.stringify('http://localhost:3000'),
+        BASE_URL: JSON.stringify('http://localhost:8000'),
         APP_ID: JSON.stringify('libtuts'),
         CLIENT: JSON.stringify(true)
       }

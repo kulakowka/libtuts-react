@@ -18,9 +18,9 @@ class HomepageContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('tutorials'), 'tutorials')
-    this.bindAsArray(firebase.child('projects'), 'projects')
-    this.bindAsArray(firebase.child('languages'), 'languages')
+    this.bindAsArray(firebase.child('tutorials').limitToFirst(10), 'tutorials')
+    this.bindAsArray(firebase.child('projects').limitToFirst(12), 'projects')
+    this.bindAsArray(firebase.child('languages').limitToFirst(12), 'languages')
   }
 
   render () {

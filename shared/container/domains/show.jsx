@@ -14,7 +14,7 @@ class DomainContainer extends Component {
 
   componentDidMount () {
     const domain = this.props.params.domain
-    this.bindAsArray(firebase.child('Tutorials').orderByChild('domain').equalTo(domain), 'tutorials')
+    this.bindAsArray(firebase.child('tutorials').orderByChild('domain').equalTo(domain), 'tutorials')
   }
 
   render () {

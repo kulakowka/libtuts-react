@@ -12,6 +12,7 @@ class TutorialContainer extends Component {
     super(props, context)
     this.state = {
       tutorial: {},
+      tutorial_content: {},
       comments: []
     }
   }
@@ -20,15 +21,23 @@ class TutorialContainer extends Component {
     const id = this.props.params.id
 
     this.bindAsObject(firebase.child('tutorials/' + id), 'tutorial')
-    // this.bindAsArray(firebase.child('_tutorial_comments/' + id), 'comments')
+    this.bindAsObject(firebase.child('tutorial_content/' + id + '/html'), 'tutorial_content')
+    this.bindAsArray(firebase.child('tutorial_projects/' + id), 'tutorial_projects')
+    this.bindAsArray(firebase.child('tutorial_languages/' + id), 'tutorial_languages')
+    this.bindAsArray(firebase.child('tutorial_comments/' + id), 'comments')
   }
 
   render () {
-    console.log(this.state.tutorial)
+    let tutorial = this.state.tutorial
+
+    tutorial.content = this.state.tutorial_content['.value']
+    tutorial.projects = this.state.tutorial_projects
+    tutorial.languages = this.state.tutorial_languages
+
     return (
       <Row>
         <Col size={8} left>
-          <Show tutorial={this.state.tutorial}/>
+          <Show {...tutorial}/>
           <h2>Questions and discussion</h2>
           <Comments comments={this.state.comments}/>
 

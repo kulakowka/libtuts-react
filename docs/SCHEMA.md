@@ -100,10 +100,6 @@ comments: {
   }
 }
 
-languages_slugs_to_ids:
-  // languages_slugs_to_ids/:slug
-  @slug: @language_id
-
 languages: {
   // languages/:language_id
   @language_id: ...
@@ -115,19 +111,25 @@ languages: {
       name: %name%
       slug: %slug%
     }
-    // languages/:language_id/projects
-    projects: {
-      @project_id: true
-      @project_id: true
-      @project_id: true
-    }
-    // languages/:language_id/tutorials
-    tutorials: {
-      @tutoria_id: true
-      @tutoria_id: true
-      @tutoria_id: true
-    }
   }
+}
+
+languages_slugs_to_ids:
+  // languages_slugs_to_ids/:slug
+  @slug: @language_id
+
+// language_projects/:language_id
+language_projects: {
+  @project_id: true
+  @project_id: true
+  @project_id: true
+}
+
+// language_tutorials/:language_id
+language_tutorials: {
+  @tutoria_id: true
+  @tutoria_id: true
+  @tutoria_id: true
 }
 
 projects_slugs_to_ids:

@@ -7,27 +7,25 @@ import Button from '../button/button'
 import Section from '../section/section'
 
 function Tutorial (props) {
-  const id = props.tutorial['.key']
+  const id = props.id
 
   if (!id) return <p>Loading...</p>
 
   let {
     title,
-    contentHtml,
+    content,
     source,
     domain,
     createdAt,
     updatedAt,
-    author,
-    languages,
-    projects,
-    keywords
-  } = props.tutorial.data
+    author
+  } = props
 
-  if (languages) languages = helpers.toArray(languages)
-  if (projects) projects = helpers.toArray(projects)
+  let languages = helpers.tagsByCommas(props.languages, renderLanguage)
+  let projects = helpers.tagsByCommas(props.projects, renderProject)
+  let keywords = helpers.tagsByCommas(props.keywords, renderKeyword)
 
-  const content = () => ({__html: contentHtml})
+  const getContent = () => ({__html: content})
 
   return (
     <article className={styles.tutorial} key={id}>
@@ -37,11 +35,9 @@ function Tutorial (props) {
 
       <h1>{title}</h1>
 
-      {!contentHtml ? null : (
-        <Section>
-          <div className={styles.content} dangerouslySetInnerHTML={content()}/>
-        </Section>
-      )}
+      {content
+        ? <Section><div className={styles.content} dangerouslySetInnerHTML={getContent()}/></Section>
+        : null}
 
       <Section>
         <dl className={styles.meta}>
@@ -63,38 +59,20 @@ function Tutorial (props) {
 
           <dt>Created by:</dt>
           <dd>
-            <Link to={helpers.userUrl(author)}>{author}</Link>
+            <Link to={helpers.userUrl(author.username)}>{author.fullName}</Link>
           </dd>
 
-          {languages && languages.length ? <span>
-            <dt>Languages:</dt>
-            <dd>
-              {helpers.tagsByCommas(languages, (language, i) =>
-                <Link to={helpers.languageUrl(language.key)} key={i}>
-                  {language.value}
-                </Link>)}
-            </dd>
-          </span> : null}
+          {languages.length
+            ? <span><dt>Languages:</dt><dd>{languages}</dd></span>
+            : null}
 
-          {projects && projects.length ? <span>
-            <dt>Projects:</dt>
-            <dd>
-              {helpers.tagsByCommas(projects, (project, i) =>
-                <Link to={helpers.projectUrl(project.key)} key={i}>
-                  {project.value}
-                </Link>)}
-            </dd>
-          </span> : null}
+          {projects.length
+            ? <span><dt>Projects:</dt><dd>{projects}</dd></span>
+            : null}
 
-          {keywords && keywords.length ? <span>
-            <dt>Keywords:</dt>
-            <dd>
-              {helpers.tagsByCommas(keywords, (keyword, i) =>
-                <Link to={helpers.keywordUrl(keyword)} key={i}>
-                  {keyword}
-                </Link>)}
-            </dd>
-          </span> : null}
+          {keywords.length
+            ? <span><dt>Keywords:</dt><dd>{keywords}</dd></span>
+            : null}
 
         </dl>
       </Section>
@@ -112,3 +90,27 @@ function Tutorial (props) {
 // }
 
 export default Tutorial
+
+function renderLanguage (language) {
+  return (
+    <Link to={helpers.languageUrl(language.slug)} key={language.slug}>
+      {language.name}
+    </Link>
+  )
+}
+
+function renderProject (project) {
+  return (
+    <Link to={helpers.projectUrl(project.slug)} key={project.slug}>
+      {project.name}
+    </Link>
+  )
+}
+
+function renderKeyword (keyword, index) {
+  return (
+    <Link to={helpers.keywordUrl(keyword)} key={index}>
+      {keyword}
+    </Link>
+  )
+}

@@ -13,7 +13,7 @@ class LanguagesContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('Languages'), 'languages')
+    this.bindAsArray(firebase.child('languages'), 'languages')
   }
 
   render () {

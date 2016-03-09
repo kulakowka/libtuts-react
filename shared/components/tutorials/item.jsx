@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import moment from 'moment'
 
 function TutorialsItem (props) {
-  const id = props.data.id
+  const id = props.id
   const url = helpers.tutorialUrl(id)
   const {
     title,
@@ -15,7 +15,7 @@ function TutorialsItem (props) {
     createdAt,
     domain,
     commentsCount
-  } = props.data
+  } = props
 
   return (
     <div className={styles.item} key={id}>

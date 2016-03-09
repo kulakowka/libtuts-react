@@ -10,12 +10,12 @@ let seeder = new Seeder({ref})
 
 // Generate fake data
 seeder
-.createInfoPages()
-.createFakeUsers(10)
-.createFakeLanguages(10)
-.createFakeProjects(10)
-.createFakeTutorials(3)
-.createFakeComments(3)
+// .createInfoPages()
+.createFakeUsers(20)
+.createFakeLanguages(20)
+.createFakeProjects(20)
+.createFakeTutorials(20)
+.createFakeComments(60)
 
 // Start seeder
 .start()

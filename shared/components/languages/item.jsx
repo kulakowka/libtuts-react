@@ -5,14 +5,14 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function LanguageItem (props) {
-  const id = props.data.slug
+  const id = props.slug
   const url = helpers.languageUrl(id)
   const imgUrl = helpers.picUrl(id)
   const {
     name,
     projectsCount,
     tutorialsCount
-  } = props.data
+  } = props
 
   return (
     <div className={styles.item} key={id}>
