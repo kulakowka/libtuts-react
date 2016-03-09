@@ -20,8 +20,8 @@ class SearchContainer extends Component {
     const reqRef = queue.child('requests').push({
       query: {
         match: {
-          title: 'Tutorial'
-          // keywords: this.props.location.query.keyword
+          // title: 'Tutorial'
+          keywords: this.props.location.query.keyword
         }
       }
     })
@@ -30,16 +30,14 @@ class SearchContainer extends Component {
       this.setState({
         total: data.total
       })
+
+      // Щас вроде работает, но надо еще поковырять, удалять слушатели событий например после каждого нового поиска и тд...
       let tutorials = {}
       Object.keys(data.index).forEach((key) => {
-        ref.child('tutorials/' + key + '/data').on('value', (snap) => {
+        ref.child('tutorials/' + key).on('value', (snap) => {
           let tutorial = snap.val()
           tutorials[key] = tutorial
           this.setState({tutorials})
-          ref.child('users/' + tutorial.author + '/data').on('value', (snap) => {
-            tutorials[key].author = snap.val()
-            this.setState({tutorials})
-          })
         })
       })
     }
