@@ -16,15 +16,19 @@ class SearchContainer extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (this.props.location.query.domain !== nextProps.location.query.domain) {
-      this.state = {
-        total: 0,
-        tutorials: {}
-      }
-      this.search()
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   if (this.props.location.query.domain !== nextProps.location.query.domain) {
+  //     this.state = {
+  //       total: 0,
+  //       tutorials: {}
+  //     }
+  //     this.search()
+  //   }
+  // }
+
+  // componentWillUnmount () {
+
+  // }
 
   componentDidMount () {
     this.search()
