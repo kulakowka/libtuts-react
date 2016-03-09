@@ -4,6 +4,7 @@ var debug = require('debug')('app:seed')
 var faker = require('faker')
 var marked = require('marked')
 var _ = require('lodash')
+var languages = require('./data')
 
 class Seeder {
   constructor (options) {
@@ -37,17 +38,6 @@ class Seeder {
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime()
     }
-  }
-
-  getFakeLanguage () {
-    let name = faker.name.firstName() + ' ' + faker.hacker.abbreviation()
-    let slug = name.toLowerCase().replace(/\W/g, '-')
-
-    if (this.collections.languages[slug]) {
-      return this.getFakeLanguage()
-    }
-
-    return {name, slug}
   }
 
   getFakeProject (author) {
@@ -115,7 +105,7 @@ class Seeder {
     }
   }
 
-  getFakeLanguages (count) {
+  getLanguages (count) {
     let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 15))
     let data = {}
     languages.forEach((language) => {
@@ -149,15 +139,14 @@ class Seeder {
     }
   }
 
-  createFakeLanguages (count) {
+  createRealLanguages () {
     return (done) => {
-      for (let i = 0; i < count; i++) {
-        let language = this.getFakeLanguage()
+      Object.keys(languages).forEach((slug) => {
+        let language = Object.assign({}, languages[slug], {slug})
 
-        this.collections.languages[language.slug] = language
-
-        this.data['languages/' + language.slug] = language
-      }
+        this.collections.languages[slug] = language
+        this.data['languages/' + slug] = language
+      })
       done()
     }
   }
@@ -191,7 +180,7 @@ class Seeder {
         let author = _.pick(user, ['username', 'fullName'])
         let tutorial = this.getFakeTutorial(author)
         let content = this.getFakeContent()
-        let languages = this.getFakeLanguages(_.random(0, 15))
+        let languages = this.getLanguages(_.random(0, 15))
         let projects = this.getFakeProjects(_.random(0, 15))
 
         this.collections.tutorials[tutorial.id] = tutorial

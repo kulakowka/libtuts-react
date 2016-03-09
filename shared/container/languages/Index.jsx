@@ -13,7 +13,7 @@ class LanguagesContainer extends Component {
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('languages').limitToFirst(20), 'languages')
+    this.bindAsArray(firebase.child('languages').limitToFirst(30), 'languages')
   }
 
   render () {

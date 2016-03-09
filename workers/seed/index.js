@@ -13,10 +13,10 @@ let seeder = new Seeder({ref})
 async.series([
   seeder.createInfoPages(),
   seeder.createFakeUsers(30),
-  seeder.createFakeLanguages(30),
-  seeder.createFakeProjects(30),
-  seeder.createFakeTutorials(100),
-  seeder.createFakeComments(500)
+  seeder.createRealLanguages(),
+  seeder.createFakeProjects(40),
+  seeder.createFakeTutorials(50),
+  seeder.createFakeComments(100)
 ], (err, results) => {
   if (err) return debug(err.message, err)
 
