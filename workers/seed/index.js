@@ -8,13 +8,17 @@ var Seeder = require('./fake')
 // Create seeder instance
 let seeder = new Seeder({ref})
 
-// Define 50 fake users for creation
+// Generate fake data
 seeder
-  .createFakeUsers(10)
-  .createFakeLanguages(10)
-  .createFakeProjects(10)
-  .createFakeTutorials(3)
-  .start() // Start seeder
-  .then(() => debug('seed complete'))
-  .then(() => process.exit(0))
-  .catch(console.log)
+.createInfoPages()
+.createFakeUsers(10)
+.createFakeLanguages(10)
+.createFakeProjects(10)
+.createFakeTutorials(3)
+.createFakeComments(3)
+
+// Start seeder
+.start()
+.then(() => debug('seed complete'))
+.then(() => process.exit(0))
+.catch(console.log)

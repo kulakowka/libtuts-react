@@ -5,16 +5,18 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function ProjectItem (props) {
-  const id = props['.key']
+  const id = props.data.slug
   const url = helpers.projectUrl(id)
   const imgUrl = helpers.picUrl(id)
   const {
     name,
     tutorialsCount
-  } = props
+  } = props.data
 
+  //
   return (
     <div className={styles.item} key={id}>
+      <Link to={url}><img src={imgUrl}/></Link>
       <h3><Link to={url}>{name}</Link></h3>
       <div className={styles.meta}>
         <Link to={url} title={numeral(tutorialsCount).format('0,0')}>{numeral(tutorialsCount).format('0a')} tutorials</Link>
@@ -23,6 +25,7 @@ function ProjectItem (props) {
   )
 }
 
+// //
 // ProjectItem.propTypes = {
 //   title: PropTypes.string.isRequired,
 //   source: PropTypes.string,

@@ -58,6 +58,27 @@ const renderFullPage = (html, initialState) => {
   `
 }
 
+app.get('/img/pics/*', (req, res, next) => {
+  var options = {
+    root: path.resolve(__dirname, '../static'),
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  var fileName = 'img/pics/__default.png'
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      console.log(err)
+      res.status(err.status).end()
+    } else {
+      console.log('Sent:', fileName)
+    }
+  })
+})
+
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {

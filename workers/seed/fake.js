@@ -65,7 +65,18 @@ class Seeder {
       keywords: faker.lorem.words(),
       createdAt: faker.date.past().getTime(),
       updatedAt: faker.date.past().getTime(),
-      author: author
+      author
+    }
+  }
+
+  getFakeComment (id, author, tutorial) {
+    return {
+      id,
+      tutorial,
+      author,
+      content: this.getFakeTutorialContent(),
+      createdAt: faker.date.past().getTime(),
+      updatedAt: faker.date.past().getTime()
     }
   }
 
@@ -152,9 +163,9 @@ class Seeder {
 
   createFakeTutorials (count) {
     for (let i = 0; i < count; i++) {
-      let uid = _.sample(this.collections.users).uid
+      let author = _.sample(this.collections.users)
       let tutorialId = faker.random.uuid()
-      let tutorial = this.getFakeTutorial(tutorialId, uid)
+      let tutorial = this.getFakeTutorial(tutorialId, author)
       let tutorialContent = this.getFakeTutorialContent()
       let tutorialLanguages = this.getFakeTutorialLanguages(_.random(0, 5))
       let tutorialProjects = this.getFakeTutorialProjects(_.random(0, 5))
@@ -165,7 +176,7 @@ class Seeder {
       this.data['tutorials/' + tutorialId + '/content'] = tutorialContent
       this.data['tutorials/' + tutorialId + '/languages'] = tutorialLanguages
       this.data['tutorials/' + tutorialId + '/projects'] = tutorialProjects
-      this.data['users/' + uid + '/tutorials/' + tutorialId + '/projects'] = true
+      this.data['users/' + author.uid + '/tutorials/' + tutorialId + '/projects'] = true
 
       Object.keys(tutorialLanguages).map((languageId) => {
         this.data['languages/' + languageId + '/tutorials/' + tutorialId] = true
@@ -174,6 +185,34 @@ class Seeder {
       Object.keys(tutorialProjects).map((projectId) => {
         this.data['projects/' + projectId + '/tutorials/' + tutorialId] = true
       })
+    }
+    return this
+  }
+
+  createFakeComments (count) {
+    for (let i = 0; i < count; i++) {
+      let tutorialId = _.sample(this.collections.tutorials).id
+      let uid = _.sample(this.collections.users).uid
+      let id = faker.random.uuid()
+      let comment = this.getFakeComment(id, uid, tutorialId)
+
+      this.collections.comments.push(comment)
+
+      this.data['comments/' + id + '/data'] = comment
+      this.data['users/' + uid + '/comments/' + id] = true
+      this.data['tutorials/' + tutorialId + '/comments/' + id] = true
+    }
+    return this
+  }
+
+  createInfoPages () {
+    this.data['pages'] = {
+      terms: '<h1>LibTuts Terms of Service</h1><p>text</p>',
+      privacy: '<h1>LibTuts Privacy Policy</h1><p>text</p>',
+      security: '<h1>LibTuts Security</h1><p>text</p>',
+      help: '<h1>LibTuts Help</h1><p>text</p>',
+      about: '<h1>About LibTuts</h1><p>text</p>',
+      contact: '<h1>Contact LibTuts</h1><p>text</p>'
     }
     return this
   }
