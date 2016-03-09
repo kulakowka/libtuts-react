@@ -9,7 +9,7 @@ const uid = ref.getAuth().uid
 
 // Create the data we want to update
 const data = {
-  ['users/' + uid + '/profile']: {
+  ['users/' + uid + '/data']: {
     username: @username,
     fullName: 'Anton Kulakov',
     createdAt: Firebase.ServerValue.TIMESTAMP,
