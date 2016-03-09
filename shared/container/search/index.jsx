@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import firebase from '../../utils/firebase'
+import ref from '../../utils/firebase'
 import helpers from '../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Tutorials from '../../components/tutorials/list'
 
-const queue = firebase.child('search/tutorials')
+const queue = ref.child('search/tutorials')
 
 class SearchContainer extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {
       total: 0,
-      tutorials: []
+      tutorials: {}
     }
   }
 
@@ -20,19 +20,30 @@ class SearchContainer extends Component {
     const reqRef = queue.child('requests').push({
       query: {
         match: {
-          keywords: this.props.location.query.keyword
+          title: 'Tutorial'
+          // keywords: this.props.location.query.keyword
         }
       }
     })
 
     const callback = (data) => {
-      console.log('show tutorials', data)
-      // data.tutorials = helpers.addKey(data.tutorials)
-      // this.setState(data)
+      this.setState({
+        total: data.total
+      })
+      let tutorials = {}
+      Object.keys(data.index).forEach((key) => {
+        ref.child('tutorials/' + key + '/data').on('value', (snap) => {
+          let tutorial = snap.val()
+          tutorials[key] = tutorial
+          this.setState({tutorials})
+          ref.child('users/' + tutorial.author + '/data').on('value', (snap) => {
+            tutorials[key].author = snap.val()
+            this.setState({tutorials})
+          })
+        })
+      })
     }
 
-    // this.bindAsObject(queue.child('response/' + reqRef.key() + '/total'), 'total')
-    // this.bindAsArray(queue.child('response/' + reqRef.key() + '/tutorials'), 'tutorials')
     queue.child('responses/' + reqRef.key()).on('value', function fn (snap) {
       if (snap.val()) {     // wait for data
         snap.ref().off('value', fn) // stop listening
@@ -43,12 +54,13 @@ class SearchContainer extends Component {
   }
 
   render () {
-    const total = this.state.total['.value']
+    const total = this.state.total
+    const tutorials = helpers.toArray(this.state.tutorials)
 
     return (
       <div>
         <h1>Founded {total} tutorials</h1>
-        <Tutorials tutorials={this.state.tutorials}/>
+        <Tutorials tutorials={tutorials}/>
       </div>
     )
   }

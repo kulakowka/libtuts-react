@@ -11,7 +11,7 @@ module.exports = {
 
   users: {
     user_1: {
-      profile: {
+      data: {
         username: 'kulakowka',
         fullName: 'Anton Kulakov',
         homepage: 'http://kulakowka.com',
@@ -33,7 +33,7 @@ module.exports = {
       }
     },
     user_2: {
-      profile: {
+      data: {
         username: 'admin',
         fullName: 'Administrator',
         homepage: 'https://libtuts.com',
@@ -54,7 +54,7 @@ module.exports = {
       }
     },
     user_3: {
-      profile: {
+      data: {
         username: 'johndoe',
         fullName: 'John Doe',
         createdAt: new Date(2010, 2, 1, 23, 15).getTime(),
@@ -62,7 +62,7 @@ module.exports = {
       }
     },
     user_4: {
-      profile: {
+      data: {
         username: 'janedoe',
         fullName: 'Jane Doe',
         createdAt: new Date(2012, 2, 1, 23, 15).getTime(),

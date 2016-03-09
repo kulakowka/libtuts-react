@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import moment from 'moment'
 
 function TutorialsItem (props) {
-  const id = props['.key']
+  const id = props.key
   const url = helpers.tutorialUrl(id)
   const {
     title,
@@ -15,7 +15,7 @@ function TutorialsItem (props) {
     createdAt,
     domain,
     commentsCount
-  } = props
+  } = props.value
 
   return (
     <div className={styles.item} key={id}>
@@ -24,16 +24,14 @@ function TutorialsItem (props) {
           ? <a href={source} target='_blank'>{title}</a>
           : <Link to={url}>{title}</Link>
         }
-
-        {id}
       </h3>
       <div className={styles.meta}>
         <Link to={helpers.tutorialCommentsUrl(id)} title={numeral(commentsCount).format('0,0')}>
           {numeral(commentsCount).format('0a')} comments
         </Link>
 
-        <Link to={helpers.userUrl(author)}>
-          {author}
+        <Link to={helpers.userUrl(author.username)}>
+          {author.fullName || author.username}
         </Link>
 
         <Link to={url}>

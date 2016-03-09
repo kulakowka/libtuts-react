@@ -19,11 +19,12 @@ class TutorialContainer extends Component {
   componentDidMount () {
     const id = this.props.params.id
 
-    this.bindAsObject(firebase.child('Tutorials/' + id), 'tutorial')
-    this.bindAsArray(firebase.child('_tutorial_comments/' + id), 'comments')
+    this.bindAsObject(firebase.child('tutorials/' + id), 'tutorial')
+    // this.bindAsArray(firebase.child('_tutorial_comments/' + id), 'comments')
   }
 
   render () {
+    console.log(this.state.tutorial)
     return (
       <Row>
         <Col size={8} left>

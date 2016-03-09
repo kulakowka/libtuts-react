@@ -28,6 +28,7 @@
     "express": "^4.13.4",
     "firebase": "^2.4.1",
     "firebase-elasticsearch-indexer": "^1.0.2",
+    "firebase-elasticsearch-search-worker": "^1.0.1",
     "firebase-queue": "^1.2.1",
     "firebase-token-generator": "^2.0.0",
     "history": "^2.0.1",

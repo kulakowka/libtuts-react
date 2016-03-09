@@ -22,7 +22,7 @@ function Tutorial (props) {
     languages,
     projects,
     keywords
-  } = props.tutorial
+  } = props.tutorial.data
 
   if (languages) languages = helpers.toArray(languages)
   if (projects) projects = helpers.toArray(projects)
