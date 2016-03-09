@@ -10,11 +10,11 @@ class Seeder {
     Object.assign(this, options, {
       data: {},
       collections: {
-        users: [],
-        tutorials: [],
-        comments: [],
-        languages: [],
-        projects: []
+        users: {},
+        tutorials: {},
+        comments: {},
+        languages: {},
+        projects: {}
       }
     })
   }
@@ -23,7 +23,7 @@ class Seeder {
     let fullName = faker.name.firstName() + ' ' + faker.name.lastName()
     let username = fullName.toLowerCase().replace(/\W/g, '-')
 
-    if (_.findIndex(this.collections.users, {username}) !== -1) {
+    if (this.collections.users[username]) {
       return this.getFakeUser()
     }
 
@@ -39,7 +39,7 @@ class Seeder {
     let name = faker.hacker.abbreviation()
     let slug = name.toLowerCase().replace(/\W/g, '-')
 
-    if (_.findIndex(this.collections.languages, {slug}) !== -1) {
+    if (this.collections.languages[slug]) {
       return this.getFakeLanguage()
     }
 
@@ -50,11 +50,11 @@ class Seeder {
     let name = faker.commerce.product()
     let slug = name.toLowerCase().replace(/\W/g, '-')
 
-    if (_.findIndex(this.collections.projects, {slug}) !== -1) {
+    if (this.collections.projects[slug]) {
       return this.getFakeProject(author)
     }
 
-    let languages = _.sampleSize(this.collections.languages, _.random(0, 5))
+    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 5))
 
     languages = languages.reduce((obj, item) => {
       obj[item.slug] = item
@@ -112,7 +112,7 @@ class Seeder {
   }
 
   getFakeLanguages (count) {
-    let languages = _.sampleSize(this.collections.languages, _.random(0, 3))
+    let languages = _.sampleSize(_.toArray(this.collections.languages), _.random(0, 3))
     let data = {}
     languages.forEach((language) => {
       data[language.slug] = _.pick(language, ['slug', 'name'])
@@ -121,7 +121,7 @@ class Seeder {
   }
 
   getFakeProjects (count) {
-    let projects = _.sampleSize(this.collections.projects, _.random(0, 3))
+    let projects = _.sampleSize(_.toArray(this.collections.projects), _.random(0, 3))
     let data = {}
     projects.forEach((project) => {
       data[project.slug] = _.pick(project, ['slug', 'name'])
@@ -133,102 +133,114 @@ class Seeder {
   // public methods
 
   createFakeUsers (count) {
-    for (let i = 0; i < count; i++) {
-      let user = this.getFakeUser()
+    return (done) => {
+      for (let i = 0; i < count; i++) {
+        let user = this.getFakeUser()
 
-      this.collections.users.push(user)
+        this.collections.users[user.username] = user
 
-      this.data['users/' + user.username] = user
+        this.data['users/' + user.username] = user
+      }
+      done()
     }
-    return this
   }
 
   createFakeLanguages (count) {
-    for (let i = 0; i < count; i++) {
-      let language = this.getFakeLanguage()
+    return (done) => {
+      for (let i = 0; i < count; i++) {
+        let language = this.getFakeLanguage()
 
-      this.collections.languages.push(language)
+        this.collections.languages[language.slug] = language
 
-      this.data['languages/' + language.slug] = language
+        this.data['languages/' + language.slug] = language
+      }
+      done()
     }
-    return this
   }
 
   createFakeProjects (count) {
-    for (let i = 0; i < count; i++) {
-      let user = _.sample(this.collections.users)
-      let author = _.pick(user, ['username', 'fullName'])
-      let project = this.getFakeProject(author)
-      let projectShort = _.pick(project, ['slug', 'name'])
+    return (done) => {
+      for (let i = 0; i < count; i++) {
+        let user = _.sample(_.toArray(this.collections.users))
+        let author = _.pick(user, ['username', 'fullName'])
+        let project = this.getFakeProject(author)
+        let projectShort = _.pick(project, ['slug', 'name'])
 
-      this.collections.projects.push(project)
+        this.collections.projects[project.slug] = project
 
-      this.data['projects/' + project.slug] = project
+        this.data['projects/' + project.slug] = project
 
-      this.data['user_projects/' + author.username + '/' + project.slug] = projectShort
+        this.data['user_projects/' + author.username + '/' + project.slug] = projectShort
 
-      Object.keys(project.languages).map((languageId) => {
-        this.data['language_projects/' + languageId + '/' + project.slug] = projectShort
-      })
+        Object.keys(project.languages).map((languageId) => {
+          this.data['language_projects/' + languageId + '/' + project.slug] = projectShort
+        })
+      }
+      done()
     }
-    return this
   }
 
   createFakeTutorials (count) {
-    for (let i = 0; i < count; i++) {
-      let user = _.sample(this.collections.users)
-      let author = _.pick(user, ['username', 'fullName'])
-      let tutorial = this.getFakeTutorial(author)
-      let content = this.getFakeContent()
-      let languages = this.getFakeLanguages(_.random(0, 5))
-      let projects = this.getFakeProjects(_.random(0, 5))
+    return (done) => {
+      for (let i = 0; i < count; i++) {
+        let user = _.sample(_.toArray(this.collections.users))
+        let author = _.pick(user, ['username', 'fullName'])
+        let tutorial = this.getFakeTutorial(author)
+        let content = this.getFakeContent()
+        let languages = this.getFakeLanguages(_.random(0, 5))
+        let projects = this.getFakeProjects(_.random(0, 5))
 
-      this.collections.tutorials.push(tutorial)
+        this.collections.tutorials[tutorial.id] = tutorial
 
-      this.data['tutorials/' + tutorial.id] = tutorial
-      this.data['tutorial_content/' + tutorial.id] = content
-      this.data['tutorial_languages/' + tutorial.id] = languages
-      this.data['tutorial_projects/' + tutorial.id] = projects
+        this.data['tutorials/' + tutorial.id] = tutorial
+        this.data['tutorial_content/' + tutorial.id] = content
+        this.data['tutorial_languages/' + tutorial.id] = languages
+        this.data['tutorial_projects/' + tutorial.id] = projects
 
-      this.data['user_tutorials/' + author.username + '/' + tutorial.id] = tutorial
+        this.data['user_tutorials/' + author.username + '/' + tutorial.id] = tutorial
 
-      Object.keys(languages).map((languageId) => {
-        this.data['language_tutorials/' + languageId + '/' + tutorial.id] = tutorial
-      })
+        Object.keys(languages).map((languageId) => {
+          this.data['language_tutorials/' + languageId + '/' + tutorial.id] = tutorial
+        })
 
-      Object.keys(projects).map((projectId) => {
-        this.data['project_tutorials/' + projectId + '/' + tutorial.id] = tutorial
-      })
+        Object.keys(projects).map((projectId) => {
+          this.data['project_tutorials/' + projectId + '/' + tutorial.id] = tutorial
+        })
+      }
+      done()
     }
-    return this
   }
 
   createFakeComments (count) {
-    for (let i = 0; i < count; i++) {
-      let user = _.sample(this.collections.users)
-      let author = _.pick(user, ['username', 'fullName'])
-      let tutorial = _.sample(this.collections.tutorials)
-      let comment = this.getFakeComment(author, tutorial.id)
+    return (done) => {
+      for (let i = 0; i < count; i++) {
+        let user = _.sample(_.toArray(this.collections.users))
+        let author = _.pick(user, ['username', 'fullName'])
+        let tutorial = _.sample(_.toArray(this.collections.tutorials))
+        let comment = this.getFakeComment(author, tutorial.id)
 
-      this.collections.comments.push(comment)
+        this.collections.comments[comment.id] = comment
 
-      this.data['comments/' + comment.id] = comment
-      this.data['user_comments/' + author.username + '/' + comment.id] = comment
-      this.data['tutorial_comments/' + tutorial.id + '/' + comment.id] = comment
+        this.data['comments/' + comment.id] = comment
+        this.data['user_comments/' + author.username + '/' + comment.id] = comment
+        this.data['tutorial_comments/' + tutorial.id + '/' + comment.id] = comment
+      }
+      done()
     }
-    return this
   }
 
   createInfoPages () {
-    this.data['pages'] = {
-      terms: '<h1>LibTuts Terms of Service</h1><p>text</p>',
-      privacy: '<h1>LibTuts Privacy Policy</h1><p>text</p>',
-      security: '<h1>LibTuts Security</h1><p>text</p>',
-      help: '<h1>LibTuts Help</h1><p>text</p>',
-      about: '<h1>About LibTuts</h1><p>text</p>',
-      contact: '<h1>Contact LibTuts</h1><p>text</p>'
+    return (done) => {
+      this.data['pages'] = {
+        terms: '<h1>LibTuts Terms of Service</h1><p>text</p>',
+        privacy: '<h1>LibTuts Privacy Policy</h1><p>text</p>',
+        security: '<h1>LibTuts Security</h1><p>text</p>',
+        help: '<h1>LibTuts Help</h1><p>text</p>',
+        about: '<h1>About LibTuts</h1><p>text</p>',
+        contact: '<h1>Contact LibTuts</h1><p>text</p>'
+      }
+      done()
     }
-    return this
   }
 
   start () {

@@ -19,6 +19,7 @@
     "worker:queue:tutorials": "DEBUG=app:* node workers/queues/tutorials"
   },
   "dependencies": {
+    "async": "^1.5.2",
     "babel-core": "^6.6.5",
     "babel-plugin-transform-object-assign": "^6.5.0",
     "body-parser": "^1.15.0",

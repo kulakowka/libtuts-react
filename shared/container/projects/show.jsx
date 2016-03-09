@@ -26,8 +26,12 @@ class ProjectContainer extends Component {
       <div>
         <About {...this.state.project}/>
 
-        <h2>Popular {this.state.project.name} Tutorials</h2>
-        <Tutorials tutorials={this.state.tutorials}/>
+        {this.state.tutorials.length
+          ? <span>
+            <h2>Popular {this.state.project.name} Tutorials</h2>
+            <Tutorials tutorials={this.state.tutorials}/>
+          </span> : null}
+
       </div>
     )
   }

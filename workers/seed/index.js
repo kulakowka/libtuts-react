@@ -4,21 +4,26 @@ var debug = require('debug')('app:seed')
 var ref = require('../utils/firebase')
 // var data = require('./data')
 var Seeder = require('./fake')
+var async = require('async')
 
 // Create seeder instance
 let seeder = new Seeder({ref})
 
 // Generate fake data
-seeder
-// .createInfoPages()
-.createFakeUsers(20)
-.createFakeLanguages(20)
-.createFakeProjects(20)
-.createFakeTutorials(20)
-.createFakeComments(60)
+async.series([
+  seeder.createInfoPages(),
+  seeder.createFakeUsers(20),
+  seeder.createFakeLanguages(20),
+  seeder.createFakeProjects(20),
+  seeder.createFakeTutorials(20),
+  seeder.createFakeComments(20)
+], (err, results) => {
+  if (err) return debug(err.message, err)
 
-// Start seeder
-.start()
-.then(() => debug('seed complete'))
-.then(() => process.exit(0))
-.catch(console.log)
+  // Start seeder
+  seeder
+  .start()
+  .then(() => debug('seed complete'))
+  .then(() => process.exit(0))
+  .catch(console.log)
+})
