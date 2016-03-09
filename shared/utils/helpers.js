@@ -37,10 +37,6 @@ const helpers = {
     return '/project/' + id
   },
 
-  keywordUrl (keyword) {
-    return '/search?keyword=' + keyword
-  },
-
   projectShieldUrl (id) {
     return baseUrl + '/shield/' + id + '.svg'
   },
@@ -53,8 +49,12 @@ const helpers = {
     return '/user/' + id
   },
 
+  keywordUrl (keyword) {
+    return '/search/tutorials?q=' + keyword
+  },
+
   domainUrl (domain) {
-    return '/domain/' + domain
+    return '/search/tutorials?domain=' + domain
   },
 
   commentUrl (tutorialId, id) {

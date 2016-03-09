@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import ref from '../../utils/firebase'
-import helpers from '../../utils/helpers'
+import ref from '../../../utils/firebase'
+import helpers from '../../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-import Tutorials from '../../components/tutorials/list'
+import Tutorials from '../../../components/tutorials/list'
 
 const queue = ref.child('search/tutorials')
 
@@ -16,15 +16,38 @@ class SearchContainer extends Component {
     }
   }
 
-  componentDidMount () {
-    const reqRef = queue.child('requests').push({
-      query: {
-        match: {
-          // title: 'Tutorial'
-          keywords: this.props.location.query.keyword
-        }
+  componentWillReceiveProps (nextProps) {
+    if (this.props.location.query.domain !== nextProps.location.query.domain) {
+      this.state = {
+        total: 0,
+        tutorials: {}
       }
-    })
+      this.search()
+    }
+  }
+
+  componentDidMount () {
+    this.search()
+  }
+
+  search () {
+    var query = {
+      term: {},
+      multi_match: {}
+    }
+
+    if (this.props.location.query.domain) {
+      query['term']['domain'] = this.props.location.query.domain
+    }
+
+    if (this.props.location.query.q) {
+      query['multi_match'] = {
+        query: this.props.location.query.q,
+        fields: ['title', 'keywords']
+      }
+    }
+
+    const reqRef = queue.child('requests').push({query})
 
     const callback = (data) => {
       this.setState({
@@ -57,7 +80,11 @@ class SearchContainer extends Component {
 
     return (
       <div>
-        <h1>Founded {total} tutorials</h1>
+        {tutorials.length
+          ? <h1>{total} tutorials found</h1>
+          : <h1>Search tutorials</h1>
+        }
+
         <Tutorials tutorials={tutorials}/>
       </div>
     )
