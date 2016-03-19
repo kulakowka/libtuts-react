@@ -8,6 +8,7 @@ import Col from '../../components/grid/col'
 import Form from '../../components/auth/forms/signin'
 import helpers from '../../utils/helpers'
 // import request from 'request'
+import { socket } from '../../api/client'
 
 class SignInContainer extends Component {
   constructor (props, context) {
@@ -28,16 +29,16 @@ class SignInContainer extends Component {
 
     this.setState({error: null, loading: true})
 
-    // request({
-    //   uri: 'http://localhost:3000/api/v1/auth/local',
-    //   json: data
-    // }, (err, res, body) => {
-    //   console.log('success', err, body)
-    // })
-    firebase
-    .authWithPassword(data)
-    .then(this.success.bind(this))
-    .catch(this.fail.bind(this))
+    socket.emit('login', data, (err) => {
+      if (err) {
+        console.log('login error', err)
+      }
+      this.context.router.push('/')
+    })
+    // firebase
+    // .authWithPassword(data)
+    // .then(this.success.bind(this))
+    // .catch(this.fail.bind(this))
   }
 
   success (authData) {
