@@ -8,7 +8,7 @@ import { FeedMixin } from '../../api/client'
 class TutorialsContainer extends Component {
   constructor (props, context) {
     super(props, context)
-    this.connectToFeed('Tutorials')
+    this.connectToFeed('tutorials')
   }
 
   render () {

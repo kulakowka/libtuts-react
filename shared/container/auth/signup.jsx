@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../utils/firebase'
+// import firebase from '../../utils/firebase'
 import { Link } from 'react-router'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
@@ -19,16 +19,16 @@ class SignInContainer extends Component {
     }
   }
 
-  componentDidMount () {
-    if (firebase.getAuth()) this.context.router.push('/')
-  }
+  // componentDidMount () {
+  //   if (firebase.getAuth()) this.context.router.push('/')
+  // }
 
   handleSubmit (data, event) {
     event.preventDefault()
 
     this.setState({error: null, loading: true})
 
-    socket.emit('login', data, (err) => {
+    socket.emit('signin', data, (err) => {
       if (err) {
         console.log('login error', err)
       }
