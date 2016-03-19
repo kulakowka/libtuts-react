@@ -13,7 +13,7 @@ function Tutorial (props) {
 
   let {
     title,
-    content,
+    contentHtml,
     source,
     domain,
     createdAt,
@@ -25,7 +25,7 @@ function Tutorial (props) {
   let projects = helpers.tagsByCommas(props.projects, renderProject)
   let keywords = helpers.tagsByCommas(props.keywords, renderKeyword)
 
-  const getContent = () => ({__html: content})
+  const getContent = () => ({__html: contentHtml})
 
   return (
     <article className={styles.tutorial} key={id}>
@@ -35,7 +35,7 @@ function Tutorial (props) {
 
       <h1>{title}</h1>
 
-      {content
+      {contentHtml
         ? <Section><div className={styles.content} dangerouslySetInnerHTML={getContent()}/></Section>
         : null}
 
