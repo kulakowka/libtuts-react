@@ -4,14 +4,22 @@ import styles from './header.styl'
 import helpers from '../../utils/helpers'
 import firebase from '../../utils/firebase'
 import Dropdown from '../dropdown/dropdown'
+import { socket } from '../../api/client'
 
 function Header (props, context) {
-  const currentUser = firebase.getAuth()
-  if (currentUser) currentUser.username = currentUser.password.email.split('@')[0]
+  const currentUser = socket.getAuthToken()
+
+  console.log('currentUser', currentUser)
+
+  // if (currentUser) currentUser.username = currentUser.password.email.split('@')[0]
 
   const logout = () => {
-    firebase.unauth()
-    context.router.push('/')
+    socket.deauthenticate(function (err) {
+      if (err) {
+        console.log('show deauthenticate Error', err)
+      }
+      context.router.push('/')
+    })
   }
 
   return (

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 // import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Tutorials from '../../components/tutorials/list'
-import { socket, subscribeFailed, FeedMixin } from '../../api/client'
+import { FeedMixin } from '../../api/client'
 
 class TutorialsContainer extends Component {
   constructor (props, context) {

@@ -15,10 +15,11 @@ export var FeedMixin = {
 
   connectToFeed (name) {
     this._name = name
+    this._itemsName = name.toLowerCase()
   },
 
   getArray () {
-    let map = this.state && this.state.items || new Map()
+    let map = this.state && this.state[this._itemsName] || new Map()
     let items = []
     map.forEach((item) => {
       items.push(item)
@@ -44,13 +45,13 @@ export var FeedMixin = {
     socket.on('receive' + this._name, (data, done) => {
       let items = new Map()
       data.forEach((item) => items.set(item.id, item))
-      this.setState({ items }, done)
+      this.setState({ [this._itemsName]: items }, done)
     })
     var changes = socket.subscribe('changes' + this._name)
     changes.on('subscribeFail', subscribeFailed)
     changes.watch((data) => {
       console.log()
-      let items = this.state.items
+      let items = this.state[this._itemsName]
       if (data.oldValue && data.isSaved) {
         if (data.oldValue.id === data.value.id) {
           items.set(data.value.id, data.value)
@@ -63,7 +64,7 @@ export var FeedMixin = {
       } else {
         items.delete(data.value.id)
       }
-      this.setState({items})
+      this.setState({ [this._itemsName]: items })
     })
     // super.componentDidMount(...arguments)
   }

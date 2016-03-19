@@ -7,6 +7,7 @@ import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
 import Form from '../../components/auth/forms/signup'
 import helpers from '../../utils/helpers'
+import { socket } from '../../api/client'
 
 class SignInContainer extends Component {
   constructor (props, context) {
@@ -27,11 +28,17 @@ class SignInContainer extends Component {
 
     this.setState({error: null, loading: true})
 
-    firebase
-    .createUser(data)
-    .then((authData) => firebase.authWithPassword(data))
-    .then(this.success.bind(this))
-    .catch(this.fail.bind(this))
+    socket.emit('login', data, (err) => {
+      if (err) {
+        console.log('login error', err)
+      }
+      this.context.router.push('/')
+    })
+    // firebase
+    // .createUser(data)
+    // .then((authData) => firebase.authWithPassword(data))
+    // .then(this.success.bind(this))
+    // .catch(this.fail.bind(this))
   }
 
   success () {
