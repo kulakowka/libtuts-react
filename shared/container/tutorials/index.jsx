@@ -8,11 +8,22 @@ import { FeedMixin } from '../../api/client'
 class TutorialsContainer extends Component {
   constructor (props, context) {
     super(props, context)
-    this.connectToFeed('tutorials')
+    this.state = {
+      tutorials: new Map()
+    }
+  }
+
+  componentDidMount () {
+    this.on('tutorials')
+  }
+
+  componentWillUnmount () {
+    this.off('tutorials')
   }
 
   render () {
-    let tutorials = this.getArray()
+    let tutorials = this.getArray('tutorials', 'createdAt')
+
     return <Tutorials tutorials={tutorials}/>
   }
 }

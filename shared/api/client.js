@@ -9,60 +9,88 @@ socket.on('error', onError)
 socket.on('connect', onConnect)
 
 export var FeedMixin = {
-  connectToFeed (name) {
-    this._name = name
-    this._itemsName = name.toLowerCase()
+
+  // Public methods
+
+  on (name) {
+    socket.emit(name + ':find', {page: 1})
+
+    let onUpdateHandler = this.__onUpdate.bind(this, name)
+    this.__handlers.onUpdate = onUpdateHandler
+    socket.on(name + ':update', onUpdateHandler)
+
+    var changes = socket.subscribe(name + ':changes')
+
+    this.__handlers.onSubscribeFail = subscribeFailed
+    changes.on('subscribeFail', subscribeFailed)
+
+    let onWatchHandler = this.__onWatch.bind(this, name)
+    this.__handlers.onWatch = onWatchHandler
+    changes.watch(onWatchHandler)
+
+    this.__handlers.changes = changes
   },
 
-  getArray () {
-    let map = this.state && this.state[this._itemsName] || new Map()
+  off (name) {
+    socket.off(name + ':update', this.__handlers.onUpdate)
+    socket.unsubscribe(name + ':changes')
+    socket.off('subscribeFail', this.__handlers.onSubscribeFail)
+    this.__handlers.changes.unwatch(this.__handlers.onWatch)
+  },
+
+  getArray (name, sort) {
+    sort = sort || 'id'
     let items = []
+    this.state[name].forEach((item) => items.push(item))
 
-    map.forEach((item) => {
-      items.push(item)
-    })
-
-    // items.reverse()
-
-    items.sort(function (a, b) {
-      if (a.createdAt > b.createdAt) return -1
-      if (a.createdAt < b.createdAt) return 1
+    items.sort((a, b) => {
+      if (a[sort] > b[sort]) return -1
+      if (a[sort] < b[sort]) return 1
       return 0
     })
+
     return items
   },
 
-  componentDidMount () {
-    socket.emit(this._name + ':find', {page: 1})
+  // Private methods and propertiees
 
-    socket.on(this._name + ':update', (data, done) => {
-      let items = new Map()
+  __handlers: {},
 
-      data.forEach((item) => items.set(item.id, item))
+  __onSet (name, item) {
+    let items = this.state[name]
+    items.set(item.id, item)
+    this.setState({ [name]: items })
+  },
 
-      this.setState({
-        [this._itemsName]: items
-      }, done)
+  __onDelete (name, item) {
+    let items = this.state[name]
+    items.delete(item.id)
+    this.setState({ [name]: items })
+  },
+
+  __onUpdate (name, data, done) {
+    let items = new Map()
+
+    data.forEach((item) => {
+      items.set(item.id, item)
     })
 
-    var changes = socket.subscribe(this._name + ':changes')
+    this.setState({
+      [name]: items
+    })
 
-    changes.on('subscribeFail', subscribeFailed)
+    done()
+  },
 
-    changes.watch((data) => {
-      let items = this.state[this._itemsName]
-
-      if (data.isSaved) {
-        if (data.oldValue && data.oldValue.id !== data.value.id) {
-          items.delete(data.oldValue.id)
-        }
-        items.set(data.value.id, data.value)
-      } else {
-        items.delete(data.value.id)
+  __onWatch (name, data) {
+    if (data.isSaved) {
+      if (data.oldValue && data.oldValue.id !== data.value.id) {
+        this.__onDelete(name, data.oldValue)
       }
-
-      this.setState({ [this._itemsName]: items })
-    })
+      this.__onSet(name, data.value)
+    } else {
+      this.__onDelete(name, data.value)
+    }
   }
 }
 
