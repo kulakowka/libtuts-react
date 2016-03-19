@@ -1,46 +1,54 @@
 import React, { Component } from 'react'
-import firebase from '../../utils/firebase'
-import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-import LinkedStateMixin from 'react-addons-linked-state-mixin'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
 import Tutorials from '../../components/tutorials/list'
 import Projects from '../../components/projects/list'
 import Languages from '../../components/languages/list'
+import { FeedMixin } from '../../api/client'
 
 class HomepageContainer extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {
-      tutorials: [],
-      projects: [],
-      languages: []
+      tutorials: new Map(),
+      projects: new Map(),
+      languages: new Map()
     }
   }
 
   componentDidMount () {
-    this.bindAsArray(firebase.child('tutorials').limitToFirst(13), 'tutorials')
-    this.bindAsArray(firebase.child('projects').limitToFirst(12), 'projects')
-    this.bindAsArray(firebase.child('languages').limitToFirst(12), 'languages')
+    this.on('tutorials')
+    this.on('projects')
+    this.on('languages')
+  }
+
+  componentWillUnmount () {
+    this.off('tutorials')
+    this.off('projects')
+    this.off('languages')
   }
 
   render () {
+    let tutorials = this.getArray('tutorials', 'createdAt')
+    let projects = this.getArray('projects', 'createdAt')
+    let languages = this.getArray('languages', 'createdAt')
+
     return (
       <Row>
         <Col size={2}>
-          {this.state.projects.length
-            ? <Projects projects={this.state.projects}/>
+          {projects.length
+            ? <Projects projects={projects}/>
             : <p>loading...</p>}
         </Col>
         <Col size={5}>
-          {this.state.tutorials.length
-            ? <Tutorials tutorials={this.state.tutorials}/>
+          {tutorials.length
+            ? <Tutorials tutorials={tutorials}/>
             : <p>loading...</p>}
         </Col>
         <Col size={3}>
-          {this.state.languages.length
-            ? <Languages languages={this.state.languages}/>
+          {languages.length
+            ? <Languages languages={languages}/>
             : <p>loading...</p>}
         </Col>
       </Row>
@@ -48,8 +56,7 @@ class HomepageContainer extends Component {
   }
 }
 
-reactMixin(HomepageContainer.prototype, ReactFireMixin)
-reactMixin(HomepageContainer.prototype, LinkedStateMixin)
+reactMixin(HomepageContainer.prototype, FeedMixin)
 
 HomepageContainer.contextTypes = {
   router: React.PropTypes.object

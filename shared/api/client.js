@@ -15,27 +15,32 @@ export var FeedMixin = {
   on (name) {
     socket.emit(name + ':find', {page: 1})
 
-    let onUpdateHandler = this.__onUpdate.bind(this, name)
-    this.__handlers.onUpdate = onUpdateHandler
-    socket.on(name + ':update', onUpdateHandler)
+    let onUpdate = this.__onUpdate.bind(this, name)
+    let onWatch = this.__onWatch.bind(this, name)
 
     var changes = socket.subscribe(name + ':changes')
 
-    this.__handlers.onSubscribeFail = subscribeFailed
     changes.on('subscribeFail', subscribeFailed)
+    changes.watch(onWatch)
 
-    let onWatchHandler = this.__onWatch.bind(this, name)
-    this.__handlers.onWatch = onWatchHandler
-    changes.watch(onWatchHandler)
+    socket.on(name + ':update', onUpdate)
 
-    this.__handlers.changes = changes
+    this.__handlers[name] = {
+      changes,
+      onUpdate,
+      onWatch,
+      subscribeFailed
+    }
+    // console.log('on ' + name, this)
   },
 
   off (name) {
-    socket.off(name + ':update', this.__handlers.onUpdate)
+    socket.off(name + ':update', this.__handlers[name].onUpdate)
     socket.unsubscribe(name + ':changes')
-    socket.off('subscribeFail', this.__handlers.onSubscribeFail)
-    this.__handlers.changes.unwatch(this.__handlers.onWatch)
+    socket.off('subscribeFail', this.__handlers[name].onSubscribeFail)
+    this.__handlers[name].changes.unwatch(this.__handlers[name].onWatch)
+    delete this.__handlers[name]
+    // console.log('off ' + name, this)
   },
 
   getArray (name, sort) {
@@ -56,19 +61,22 @@ export var FeedMixin = {
 
   __handlers: {},
 
-  __onSet (name, item) {
+  __onSet (name, data) {
+    console.log('__onSet', name, data)
     let items = this.state[name]
-    items.set(item.id, item)
+    items.set(data.id, data)
     this.setState({ [name]: items })
   },
 
-  __onDelete (name, item) {
+  __onDelete (name, data) {
+    console.log('__onDelete', name, data)
     let items = this.state[name]
-    items.delete(item.id)
+    items.delete(data.id)
     this.setState({ [name]: items })
   },
 
   __onUpdate (name, data, done) {
+    console.log('__onUpdate', name, data)
     let items = new Map()
 
     data.forEach((item) => {
@@ -83,6 +91,7 @@ export var FeedMixin = {
   },
 
   __onWatch (name, data) {
+    console.log('__onWatch', name, data)
     if (data.isSaved) {
       if (data.oldValue && data.oldValue.id !== data.value.id) {
         this.__onDelete(name, data.oldValue)
