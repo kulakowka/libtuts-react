@@ -9,7 +9,7 @@ import Section from '../section/section'
 function Tutorial (props) {
   const id = props.id
 
-  console.log('props', props)
+  // console.log('props', props)
 
   if (!id) return <p>Loading...</p>
 
