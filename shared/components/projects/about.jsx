@@ -5,7 +5,8 @@ import helpers from '../../utils/helpers'
 import Section from '../section/section'
 
 function AboutProject (props) {
-  const id = props.slug
+  console.log('AboutProject', props)
+  const id = props.id
 
   if (!id) return <p>Loading...</p>
 

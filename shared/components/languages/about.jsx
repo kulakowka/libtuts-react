@@ -4,7 +4,8 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function AboutLanguage (props) {
-  const id = props.language['.key']
+  console.log('AboutLanguage', props)
+  const id = props.id
 
   if (!id) return <p>Loading...</p>
 
@@ -13,7 +14,7 @@ function AboutLanguage (props) {
     name,
     projectsCount,
     tutorialsCount
-  } = props.language
+  } = props
 
   return (
     <div className={styles.about} key={id}>
