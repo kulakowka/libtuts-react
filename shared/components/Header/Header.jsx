@@ -7,12 +7,7 @@ import Dropdown from '../dropdown/dropdown'
 import { socket } from '../../api/client'
 
 function Header (props, context) {
-  const currentUser = socket.getAuthToken()
-
-  // console.log('currentUser', currentUser)
-
-  // if (currentUser) currentUser.username = currentUser.password.email.split('@')[0]
-
+  const currentUser = props.currentUser
   const logout = () => {
     socket.deauthenticate(function (err) {
       if (err) {

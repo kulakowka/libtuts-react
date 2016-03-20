@@ -2,11 +2,27 @@ import React, { Component, PropTypes } from 'react'
 import Header from '../components/header/header'
 import Footer from '../components/footer/footer'
 import styles from './main.styl'
+import { socket } from '../api/client'
 
 class MainLayout extends Component {
+  constructor () {
+    super(...arguments)
+    this.state = {
+      currentUser: null
+    }
+
+    socket.on('authStateChange', () => {
+      const currentUser = socket.getAuthToken()
+
+      this.setState({
+        currentUser
+      })
+    })
+  }
+
   render () {
     return <div className={styles.app}>
-      <Header/>
+      <Header currentUser={this.state.currentUser}/>
 
       <div className={styles.layout}>
         {this.props.children}
