@@ -19,38 +19,27 @@ class SignInContainer extends Component {
     }
   }
 
-  // componentDidMount () {
-  //   if (firebase.getAuth()) this.context.router.push('/')
-  // }
-
   handleSubmit (data, event) {
     event.preventDefault()
 
     this.setState({error: null, loading: true})
 
-    socket.emit('signin', data, (err) => {
-      if (err) {
-        console.log('login error', err)
-      }
+    socket.emit('auth:signup', data, (err) => {
+      if (err) return console.log('signup error', err)
       this.context.router.push('/')
     })
-    // firebase
-    // .createUser(data)
-    // .then((authData) => firebase.authWithPassword(data))
-    // .then(this.success.bind(this))
-    // .catch(this.fail.bind(this))
   }
 
-  success () {
-    this.context.router.push('/')
-  }
+  // success () {
+  //   this.context.router.push('/')
+  // }
 
-  fail (error) {
-    this.setState({
-      error: error.message,
-      loading: false
-    })
-  }
+  // fail (error) {
+  //   this.setState({
+  //     error: error.message,
+  //     loading: false
+  //   })
+  // }
 
   render () {
     return (
