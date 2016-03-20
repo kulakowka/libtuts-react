@@ -6,12 +6,12 @@ import Section from '../section/section'
 
 function AboutProject (props) {
   console.log('AboutProject', props)
-  const id = props.id
+  const slug = props.slug
 
-  if (!id) return <p>Loading...</p>
+  if (!slug) return <p>Loading...</p>
 
-  const url = helpers.projectUrl(id)
-  const shieldSrc = helpers.projectShieldUrl(id)
+  const url = helpers.projectUrl(slug)
+  const shieldSrc = helpers.projectShieldUrl(slug)
   let {
     name,
     description,
@@ -23,7 +23,7 @@ function AboutProject (props) {
   let keywords = helpers.tagsByCommas(props.keywords, renderKeyword)
 
   return (
-    <div className={styles.about} key={id}>
+    <div className={styles.about} key={slug}>
       <h1>{name}</h1>
 
       {description

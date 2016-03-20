@@ -9,7 +9,7 @@ import { socket } from '../../api/client'
 function Header (props, context) {
   const currentUser = socket.getAuthToken()
 
-  console.log('currentUser', currentUser)
+  // console.log('currentUser', currentUser)
 
   // if (currentUser) currentUser.username = currentUser.password.email.split('@')[0]
 
