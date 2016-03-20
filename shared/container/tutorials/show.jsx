@@ -3,7 +3,7 @@ import Show from '../../components/tutorials/show'
 import Comments from '../../components/comments/list'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
-import { LiveItem } from '../../api/client'
+import { LiveItem, LiveList } from '../../api/client'
 
 class TutorialContainer extends Component {
   render () {
@@ -13,11 +13,8 @@ class TutorialContainer extends Component {
       <Row>
         <Col size={8} left>
           <LiveItem name='tutorial' id={id} component={Show} />
-          {/*
-          <Show {...tutorial}/>
           <h2>Questions and discussion</h2>
-          <Comments comments={this.state.comments}/>
-          */}
+          {/*<LiveList name='comments' tutorialId={id} component={Comments} />*/}
         </Col>
       </Row>
     )
