@@ -17,6 +17,14 @@ const helpers = {
     return '/tutorials/new'
   },
 
+  addProjectUrl () {
+    return '/projects/new'
+  },
+
+  addLanguageUrl () {
+    return '/languages/new'
+  },
+
   tutorialEditUrl (id) {
     return '/tutorial/' + id + '/edit'
   },

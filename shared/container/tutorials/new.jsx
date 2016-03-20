@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../utils/firebase'
-import helpers from '../../utils/helpers'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import Form from '../../components/tutorials/form'
@@ -25,14 +23,13 @@ class NewTutorialContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
-    console.log('data', data, event)
+    // console.log('data', data, event)
 
     this.setState({error: null, loading: true})
 
     socket.emit('tutorials:create', data, (err) => {
       if (err) return console.log('tutorials create error', err)
-      // this.setState({error: null, loading: false})
-      // this.context.router.push('/')
+      this.context.router.push('/tutorials')
     })
   }
 

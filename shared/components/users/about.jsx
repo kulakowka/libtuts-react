@@ -4,6 +4,7 @@ import styles from './about.styl'
 import Section from '../section/section'
 
 function AboutUser (props) {
+  console.log('AboutUser', props)
   const {
     username,
     fullName,
@@ -13,7 +14,7 @@ function AboutUser (props) {
 
   return (
     <div className={styles.aboutUser} key={username}>
-      <h1>{fullName}</h1>
+      <h1>{fullName || username}</h1>
 
       {about
         ? <p className={styles.about}>{about}</p>

@@ -1,32 +1,18 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../utils/firebase'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import About from '../../components/users/about'
 import Tutorials from '../../components/tutorials/list'
 import Comments from '../../components/comments/list'
+import { LiveItem, LiveList } from '../../api/client'
 
 class UserContainer extends Component {
-  constructor (props, context) {
-    super(props, context)
-    this.state = {
-      user: {},
-      tutorials: [],
-      comments: []
-    }
-  }
-
-  componentDidMount () {
+  render () {
     const id = this.props.params.id
 
-    this.bindAsObject(firebase.child('users/' + id), 'user')
-    this.bindAsArray(firebase.child('user_tutorials/' + id).limitToFirst(10), 'tutorials')
-    this.bindAsArray(firebase.child('user_comments/' + id).limitToFirst(10), 'comments')
-  }
-
-  render () {
     return (
       <div>
+        <LiveItem name='user' id={id} component={About} />
+
+        {/*
         <About {...this.state.user}/>
 
         {this.state.tutorials.length
@@ -40,13 +26,11 @@ class UserContainer extends Component {
             <h2>Comments</h2>
             <Comments comments={this.state.comments}/>
           </span> : null}
-
+        */}
       </div>
     )
   }
 }
-
-reactMixin(UserContainer.prototype, ReactFireMixin)
 
 UserContainer.contextTypes = {
   router: PropTypes.object

@@ -29,10 +29,14 @@ function Header (props, context) {
 
         {currentUser ? (
           <nav className={styles.userMenu}>
-            <Link className={styles.item} to={helpers.addTutorialUrl()}>Add Tutorial</Link>
+            <Dropdown handle='Create' right>
+              <Link to={helpers.addTutorialUrl()}>Create Tutorial</Link>
+              <Link to={helpers.addProjectUrl()}>Create Project</Link>
+              <Link to={helpers.addLanguageUrl()}>Create Language</Link>
+            </Dropdown>
             <Dropdown handle={currentUser.username} right>
               <Link to={helpers.userUrl(currentUser.username)}>{currentUser.username}</Link>
-              {/*<Link to={helpers.settingsUrl()}>Settings</Link>*/}
+              {/* <Link to={helpers.settingsUrl()}>Settings</Link> */}
               <a onClick={logout}>Sign Out</a>
             </Dropdown>
           </nav>
