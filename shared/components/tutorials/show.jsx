@@ -9,6 +9,8 @@ import Section from '../section/section'
 function Tutorial (props) {
   const id = props.id
 
+  console.log('props', props)
+
   if (!id) return <p>Loading...</p>
 
   let {
@@ -59,7 +61,7 @@ function Tutorial (props) {
 
           <dt>Created by:</dt>
           <dd>
-            <Link to={helpers.userUrl(author.username)}>{author.fullName}</Link>
+            <Link to={helpers.userUrl(author.username)}>{author.fullName || author.username}</Link>
           </dd>
 
           {languages.length
