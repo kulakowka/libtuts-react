@@ -10,121 +10,6 @@ export var socket = socketCluster.connect({
 socket.on('error', onError)
 socket.on('connect', onConnect)
 
-// export var FeedMixin = {
-
-//   // Public methods
-
-//   connect (name) {
-//     console.log('connect', this)
-//     this.__subscriptions = {}
-//     this.__handlers = {}
-//     this.__subscriptions[name] = true
-//     this.state = {
-//       [name]: new Map()
-//     }
-//   },
-
-//   getArray (name, sort) {
-//     sort = sort || 'id'
-//     let items = []
-//     if (this.state && this.state[name]) this.state[name].forEach((item) => items.push(item))
-
-//     items.sort((a, b) => {
-//       if (a[sort] > b[sort]) return -1
-//       if (a[sort] < b[sort]) return 1
-//       return 0
-//     })
-
-//     return items
-//   },
-
-//   // Mixed methods
-
-//   componentDidMount () {
-//     console.log('componentDidMount', this)
-//     console.log(this.__subscriptions)
-//     Object.keys(this.__subscriptions).forEach((name) => {
-//       // add handlers
-//       this.__on(name)
-//     })
-//   },
-
-//   componentWillUnmount () {
-//     console.log('componentWillUnmount', this)
-//     Object.keys(this.__handlers).forEach((name) => {
-//       // remove handlers
-//       this.__off(name)
-//     })
-//   },
-
-//   // Private methods and propertiees
-
-//   __on (name) {
-//     let onUpdate = this.__onUpdate.bind(this, name)
-//     let onWatch = this.__onWatch.bind(this, name)
-//     var changes = socket.subscribe(name + ':changes')
-
-//     changes.on('subscribeFail', subscribeFailed)
-//     changes.watch(onWatch)
-//     socket.on(name + ':update', onUpdate)
-//     socket.emit(name + ':find', {page: 1})
-
-//     this.__handlers[name] = {
-//       changes,
-//       onUpdate,
-//       onWatch,
-//       subscribeFailed
-//     }
-//   },
-
-//   __off (name) {
-//     this.__handlers[name].changes.unwatch(this.__handlers[name].onWatch)
-//     socket.off(name + ':update', this.__handlers[name].onUpdate)
-//     socket.off('subscribeFail', this.__handlers[name].onSubscribeFail)
-//     socket.unsubscribe(name + ':changes')
-//     delete this.__handlers[name]
-//   },
-
-//   __onSet (name, data, done) {
-//     // console.log('__onSet', name, data)
-//     let items = this.state[name]
-//     items.set(data.id, data)
-//     this.setState({ [name]: items }, done)
-//   },
-
-//   __onDelete (name, data, done) {
-//     // console.log('__onDelete', name, data)
-//     let items = this.state[name]
-//     items.delete(data.id)
-//     this.setState({ [name]: items }, done)
-//   },
-
-//   __onUpdate (name, data, done) {
-//     // console.log('__onUpdate', name, data)
-//     let items = new Map()
-
-//     data.forEach((item) => {
-//       items.set(item.id, item)
-//     })
-
-//     this.setState({
-//       [name]: items
-//     }, done)
-//   },
-
-//   __onWatch (name, data) {
-//     // console.log('__onWatch', name, data)
-//     if (data.isSaved) {
-//       if (data.oldValue && data.oldValue.id !== data.value.id) {
-//         this.__onDelete(name, data.oldValue)
-//       }
-//       this.__onSet(name, data.value)
-//     } else {
-//       this.__onDelete(name, data.value)
-//     }
-//   }
-// }
-
 function onConnect (status) {
   if (status.isAuthenticated) {
     console.log('CONNECTED: is Authenticated', status)
@@ -161,7 +46,7 @@ export class LiveList extends Component {
     var changes = socket.subscribe(name + ':changes')
 
     changes.watch(this.onWatch)
-    // changes.on('subscribeFail', subscribeFailed)
+    changes.on('subscribeFail', subscribeFailed)
 
     socket.on(name + ':update', this.onUpdate)
 
@@ -177,7 +62,7 @@ export class LiveList extends Component {
 
     this.changes.unwatch(this.onWatch)
 
-    // socket.off('subscribeFail', subscribeFailed)
+    socket.off('subscribeFail', subscribeFailed)
     socket.off(name + ':update', this.onUpdate)
   }
 
@@ -262,32 +147,20 @@ export class LiveItem extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.id !== this.props.id) {
+      this.__off(this.props.id, () => {
+        this.__on(nextProps.id)
+      })
+    }
+  }
+
   componentDidMount () {
-    let props = this.props
-    let id = props.id
-    let name = props.name
-
-    var changes = socket.subscribe(name + ':' + id + ':update')
-
-    changes.watch(this.onUpdate)
-
-    socket.emit(name + ':findOne', { id })
-
-    socket.on(name + ':' + id + ':update', this.onUpdate)
-
-    this.changes = changes
+    this.__on(this.props.id)
   }
 
   componentWillUnmount () {
-    let props = this.props
-    let id = props.id
-    let name = props.name
-
-    socket.unsubscribe(name + ':' + id + ':update')
-
-    this.changes.unwatch(this.onUpdate)
-
-    socket.off(name + ':' + id + ':update', this.onUpdate)
+    this.__off(this.props.id)
   }
 
   render () {
@@ -298,8 +171,32 @@ export class LiveItem extends Component {
     return <Component {...data} />
   }
 
+  __on (id, cb) {
+    let props = this.props
+    let name = props.name
+    var changes = socket.subscribe(name + ':' + id + ':update')
+    changes.on('subscribeFail', subscribeFailed)
+    changes.watch(this.onUpdate)
+    socket.emit(name + ':findOne', { id })
+    socket.on(name + ':' + id + ':update', this.onUpdate)
+
+    this.changes = changes
+
+    cb && cb()
+  }
+
+  __off (id, cb) {
+    let props = this.props
+    let name = props.name
+    socket.unsubscribe(name + ':' + id + ':update')
+    this.changes.unwatch(this.onWatch)
+    socket.off('subscribeFail', subscribeFailed)
+    socket.off(name + ':' + id + ':update', this.onUpdate)
+
+    cb && cb()
+  }
+
   __onUpdate (data, done) {
-    console.log('__onUpdate', data)
     this.setState({ data }, done)
   }
 }

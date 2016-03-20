@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-// import firebase from '../../utils/firebase'
 import { Link } from 'react-router'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
 import Form from '../../components/auth/forms/signup'
@@ -53,8 +50,6 @@ class SignInContainer extends Component {
     )
   }
 }
-
-reactMixin(SignInContainer.prototype, ReactFireMixin)
 
 SignInContainer.contextTypes = {
   router: PropTypes.object

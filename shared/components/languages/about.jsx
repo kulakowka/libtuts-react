@@ -4,7 +4,7 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function AboutLanguage (props) {
-  console.log('AboutLanguage', props)
+  
   const id = props.id
 
   if (!id) return <p>Loading...</p>

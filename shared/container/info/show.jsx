@@ -1,47 +1,22 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../utils/firebase'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import Section from '../../components/section/section'
+import { LiveItem } from '../../api/client'
+
+function Page (props) {
+  const content = () => ({__html: props.html})
+  return <div dangerouslySetInnerHTML={content()}/>
+}
 
 class InfoContainer extends Component {
-  constructor (props, context) {
-    super(props, context)
-    this.state = {
-      page: {}
-    }
-  }
-
-  loadPage () {
-    const page = this.props.params.page
-
-    firebase.child('Pages/' + page).once('value').then((snap) => {
-      this.setState({
-        page: snap.val()
-      })
-    })
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.params.page !== this.props.params.page) this.loadPage()
-  }
-
-  componentDidMount () {
-    this.loadPage()
-  }
-
   render () {
-    const content = () => ({__html: this.state.page})
-
+    const page = this.props.params.page
     return (
       <Section>
-        <div dangerouslySetInnerHTML={content()}/>
+        <LiveItem name='page' id={page} component={Page} />
       </Section>
     )
   }
 }
-
-reactMixin(InfoContainer.prototype, ReactFireMixin)
 
 InfoContainer.contextTypes = {
   router: PropTypes.object

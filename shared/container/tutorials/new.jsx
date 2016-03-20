@@ -6,6 +6,7 @@ import reactMixin from 'react-mixin'
 import Form from '../../components/tutorials/form'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
+import { socket } from '../../api/client'
 
 class NewTutorialContainer extends Component {
   constructor (props, context) {
@@ -17,9 +18,9 @@ class NewTutorialContainer extends Component {
     }
   }
 
-  componentDidMount () {
-    if (!firebase.getAuth()) this.context.router.push('/')
-  }
+  // componentDidMount () {
+  //   if (!firebase.getAuth()) this.context.router.push('/')
+  // }
 
   handleSubmit (data, event) {
     event.preventDefault()
@@ -28,32 +29,29 @@ class NewTutorialContainer extends Component {
 
     this.setState({error: null, loading: true})
 
-    const taskRef = firebase.child('queue/tutorials/tasks').push()
-
-    // add author to data
-    data.author = firebase.getAuth().password.email.split('@')[0]
-
-    taskRef.set(data)
-    .then(this.success.bind(this, taskRef))
-    .catch(this.fail.bind(this))
-  }
-
-  success (taskRef, snap) {
-    taskRef.on('value', (snap) => {
-      let key = snap.val().key
-      if (key) {
-        taskRef.off()
-        this.context.router.push(helpers.tutorialUrl(key))
-      }
+    socket.emit('tutorials:create', data, (err) => {
+      if (err) return console.log('tutorials create error', err)
+      // this.setState({error: null, loading: false})
+      // this.context.router.push('/')
     })
   }
 
-  fail (error) {
-    this.setState({
-      error: error.message,
-      loading: false
-    })
-  }
+  // success (taskRef, snap) {
+  //   taskRef.on('value', (snap) => {
+  //     let key = snap.val().key
+  //     if (key) {
+  //       taskRef.off()
+  //       this.context.router.push(helpers.tutorialUrl(key))
+  //     }
+  //   })
+  // }
+
+  // fail (error) {
+  //   this.setState({
+  //     error: error.message,
+  //     loading: false
+  //   })
+  // }
 
   render () {
     return (

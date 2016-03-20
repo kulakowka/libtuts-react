@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router'
 import styles from './header.styl'
 import helpers from '../../utils/helpers'
-import firebase from '../../utils/firebase'
 import Dropdown from '../dropdown/dropdown'
 import { socket } from '../../api/client'
 

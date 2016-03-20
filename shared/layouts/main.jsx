@@ -11,13 +11,21 @@ class MainLayout extends Component {
       currentUser: null
     }
 
-    socket.on('authStateChange', () => {
+    this.authStateChange = () => {
       const currentUser = socket.getAuthToken()
 
       this.setState({
         currentUser
       })
-    })
+    }
+  }
+
+  componentDidMount () {
+    socket.on('authStateChange', this.authStateChange)
+  }
+
+  componentWillUnmount () {
+    socket.off('authStateChange', this.authStateChange)
   }
 
   render () {
