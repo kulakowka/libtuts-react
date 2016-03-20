@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import Select from './select'
 
-class SelectLanguages extends Component {
+class SelectProjects extends Component {
   constructor (props, context) {
     super(props, context)
 
     this.state = {
       options: [
-        { value: '436a1e71-c0ff-41da-abb5-989e05d3e71b', label: 'JavaScript' },
-        { value: '1d93addb-3c66-42b4-a176-9ffdd19a8cd0', label: 'C++' },
-        { value: 'a677af53-b077-4c27-90bc-d35e01f93bb2', label: 'Ruby' }
+        { value: 'efae62ec-11ea-4e51-b4c4-376ea3968c2a', label: 'React.js' },
+        { value: 'f8929023-f31b-430e-bf2b-e97696103799', label: 'Babel.js' },
+        { value: '9f7c841b-4de8-4fa2-bdd0-63540436357a', label: 'Passport.js' }
       ]
     }
   }
@@ -24,4 +24,4 @@ class SelectLanguages extends Component {
   }
 }
 
-export default SelectLanguages
+export default SelectProjects

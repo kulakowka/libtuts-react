@@ -23,6 +23,7 @@ class NewTutorialContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
+    // data.languages = data.languages.map((language) => language.value)
     // console.log('data', data, event)
 
     this.setState({error: null, loading: true})

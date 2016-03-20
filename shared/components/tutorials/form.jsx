@@ -5,32 +5,36 @@ import { Link } from 'react-router'
 import styles from '../forms/default.styl'
 import Section from '../section/section'
 import Button from '../button/button'
-import helpers from '../../utils/helpers'
+
 import SelectLanguages from '../select/languages'
+import SelectProjects from '../select/projects'
 
 class TutorialForm extends Component {
   constructor (props, context) {
     super(props, context)
 
     this.state = {
-      title: 'Test',
+      // title: 'Test',
       // source: '',
       // content: '',
       // keywords: [],
-      languages: ['ruby'] // ,
+      // languages: ['ruby'] // ,
       // projects: ['react']
     }
   }
 
-  changeProjects (projects) {
-    this.setState({projects})
+  setProjects (projects) {
+    console.log('setProjects', projects)
+    this.setState({ projects })
   }
 
   setLanguages (languages) {
-    this.setState({languages})
+    console.log('setLanguages', languages)
+    this.setState({ languages })
   }
 
   render () {
+    console.log('render: state.languages', this.state.languages)
     return (
       <Section>
         <form className={styles.form} onSubmit={this.props.onSubmit.bind(this, this.state)}>
@@ -45,6 +49,15 @@ class TutorialForm extends Component {
               name='languages'
               value={this.state.languages}
               onChange={this.setLanguages.bind(this)}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <SelectProjects
+              multi
+              name='projects'
+              value={this.state.projects}
+              onChange={this.setProjects.bind(this)}
             />
           </div>
 
