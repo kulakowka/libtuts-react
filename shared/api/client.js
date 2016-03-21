@@ -48,8 +48,9 @@ export class LiveList extends Component {
 
   componentDidMount () {
     let name = this.props.name
+    let params = this.props.params
 
-    socket.emit('get ' + name, { last: 0 })
+    socket.emit('get ' + name, params)
     socket.on('receive ' + name, this.receiveItems)
   }
 
@@ -87,6 +88,7 @@ export class LiveList extends Component {
 }
 
 LiveList.propTypes = {
+  params: PropTypes.object,
   name: PropTypes.string.isRequired,
   component: PropTypes.func.isRequired
 }

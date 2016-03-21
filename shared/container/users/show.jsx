@@ -6,21 +6,14 @@ import { LiveItem, LiveList } from '../../api/client'
 
 class UserContainer extends Component {
   render () {
-    const params = this.props.params
-    
+    const params = this.props.params // { username: 'dsfs' }
+
     return (
       <div>
         <LiveItem name='user' params={params} component={About} />
+        <LiveList name='user_tutorials' params={params} component={Tutorials} />
 
         {/*
-        <About {...this.state.user}/>
-
-        {this.state.tutorials.length
-          ? <span>
-            <h2>Tutorials</h2>
-            <Tutorials tutorials={this.state.tutorials}/>
-          </span> : null}
-
         {this.state.comments.length
           ? <span>
             <h2>Comments</h2>
