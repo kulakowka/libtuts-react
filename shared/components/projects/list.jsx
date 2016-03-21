@@ -5,13 +5,13 @@ import Section from '../section/section'
 function ProjectsList (props) {
   return (
     <Section>
-      {props.projects.map(Item)}
+      {props.data.map(Item)}
     </Section>
   )
 }
 
 ProjectsList.propTypes = {
-  projects: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 }
 
 export default ProjectsList

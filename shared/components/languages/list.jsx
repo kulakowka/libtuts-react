@@ -5,13 +5,13 @@ import Section from '../section/section'
 function LanguagesList (props) {
   return (
     <Section>
-      {props.languages.map(Item)}
+      {props.data.map(Item)}
     </Section>
   )
 }
 
 LanguagesList.propTypes = {
-  languages: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 }
 
 export default LanguagesList

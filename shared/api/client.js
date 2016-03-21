@@ -1,5 +1,5 @@
 import socketCluster from 'socketcluster-client'
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 // import reactMixin from 'react-mixin'
 
 export var socket = socketCluster.connect({
@@ -28,12 +28,36 @@ function subscribeFailed (err) {
 
 // livelist
 
+// <LiveList name='tutorials' component={Tutorials} />
 export class LiveList extends Component {
   constructor (props, context) {
     super(props, context)
 
-    this.onUpdate = this.__onUpdate.bind(this)
-    this.onWatch = this.__onWatch.bind(this)
+    this.onItems = (items, next) => {
+      console.log('onItems', items)
+
+      let data = new Map()
+      items.forEach((item) => {
+        data.set(item.id, item)
+      })
+      this.setState({ data }, next)
+    }
+
+    this.onSet = (item, next) => {
+      console.log('onSet', item)
+
+      let data = this.state.data
+      data.set(item.id, item)
+      this.setState({ data }, next)
+    }
+
+    this.onDelete = (item, next) => {
+      console.log('onDelete', item)
+
+      let data = this.state.data
+      data.delete(item.id)
+      this.setState({ data }, next)
+    }
 
     this.state = {
       data: new Map()
@@ -43,37 +67,34 @@ export class LiveList extends Component {
   componentDidMount () {
     let name = this.props.name
 
-    var changes = socket.subscribe(name + ':changes')
+    // console.log('componentDidMount', name, this)
 
-    changes.watch(this.onWatch)
-    changes.on('subscribeFail', subscribeFailed)
+    // socket.on(name, this.onItems)
 
-    socket.on(name + ':update', this.onUpdate)
+    socket.on(name + ':set', this.onSet)
+    socket.on(name + ':delete', this.onDelete)
 
-    socket.emit(name + ':find', {page: 1})
-
-    this.changes = changes
+    socket.emit(name + ':start', this.props)
   }
 
   componentWillUnmount () {
     let name = this.props.name
 
-    socket.unsubscribe(name + ':changes')
+    // console.log('componentWillUnmount', name, this)
 
-    this.changes.unwatch(this.onWatch)
+    // socket.off(name, this.onItems)
+    socket.emit(name + ':stop', this.props)
 
-    socket.off('subscribeFail', subscribeFailed)
-    socket.off(name + ':update', this.onUpdate)
+    socket.off(name + ':set', this.onSet)
+    socket.off(name + ':delete', this.onDelete)
   }
 
   render () {
     let props = this.props
-    let name = props.name
     let data = this.__getArray('createdAt')
     let Component = props.component
-    let newProps = {[name]: data}
 
-    return <Component {...newProps} />
+    return <Component {...props} data={data} />
   }
 
   // Private methods and propertiees
@@ -83,8 +104,6 @@ export class LiveList extends Component {
 
     let items = []
 
-    // console.log('__getArray data:', this.state.data)
-
     this.state.data.forEach((item) => items.push(item))
 
     items.sort((a, b) => {
@@ -93,47 +112,13 @@ export class LiveList extends Component {
       return 0
     })
 
-    // console.log('__getArray items:', items)
-
     return items
   }
+}
 
-  __onSet (item, done) {
-    let data = this.state.data
-
-    data.set(item.id, item)
-
-    this.setState({ data }, done)
-  }
-
-  __onDelete (item, done) {
-    let data = this.state.data
-
-    data.delete(item.id)
-
-    this.setState({ data }, done)
-  }
-
-  __onUpdate (items, done) {
-    let data = new Map()
-
-    items.forEach((item) => {
-      data.set(item.id, item)
-    })
-
-    this.setState({ data }, done)
-  }
-
-  __onWatch (data) {
-    if (data.isSaved) {
-      if (data.oldValue && data.oldValue.id !== data.value.id) {
-        this.__onDelete(data.oldValue)
-      }
-      this.__onSet(data.value)
-    } else {
-      this.__onDelete(data.value)
-    }
-  }
+LiveList.propTypes = {
+  name: PropTypes.string.isRequired,
+  component: PropTypes.func.isRequired
 }
 
 export class LiveItem extends Component {
@@ -199,4 +184,9 @@ export class LiveItem extends Component {
   __onUpdate (data, done) {
     this.setState({ data }, done)
   }
+}
+
+LiveItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  component: PropTypes.func.isRequired
 }

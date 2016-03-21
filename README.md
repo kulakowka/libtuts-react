@@ -1,5 +1,8 @@
 See [docs](/docs)
 
+сделать чтобы цитаты можно было твитнуть в один клик
+
+https://www.npmjs.com/package/shortid
 
 Вот тут надо почитать как текущего юзера через контекст во все компоненты протолкнуть
 https://facebook.github.io/react/docs/context.html
