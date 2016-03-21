@@ -6,7 +6,6 @@ import moment from 'moment'
 import Section from '../section/section'
 
 function CommentsItem (props) {
-  console.log(props)
   const id = props.id
 
   const {

@@ -4,7 +4,6 @@ import styles from './about.styl'
 import Section from '../section/section'
 
 function AboutUser (props) {
-  console.log('AboutUser', props)
   const {
     username,
     fullName,

@@ -16,40 +16,20 @@ class NewTutorialContainer extends Component {
     }
   }
 
-  // componentDidMount () {
-  //   if (!firebase.getAuth()) this.context.router.push('/')
-  // }
-
   handleSubmit (data, event) {
     event.preventDefault()
 
-    // data.languages = data.languages.map((language) => language.value)
-    // console.log('data', data, event)
-
     this.setState({error: null, loading: true})
 
-    socket.emit('tutorials:create', data, (err) => {
+    if (data.keywords) data.keywords = data.keywords.split(',')
+    if (data.languages) data.languages = data.languages.map((language) => language.value)
+    if (data.projects) data.projects = data.projects.map((project) => project.value)
+
+    socket.emit('create tutorial', data, (err) => {
       if (err) return console.log('tutorials create error', err)
       this.context.router.push('/tutorials')
     })
   }
-
-  // success (taskRef, snap) {
-  //   taskRef.on('value', (snap) => {
-  //     let key = snap.val().key
-  //     if (key) {
-  //       taskRef.off()
-  //       this.context.router.push(helpers.tutorialUrl(key))
-  //     }
-  //   })
-  // }
-
-  // fail (error) {
-  //   this.setState({
-  //     error: error.message,
-  //     loading: false
-  //   })
-  // }
 
   render () {
     return (

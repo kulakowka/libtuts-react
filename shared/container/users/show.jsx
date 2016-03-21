@@ -11,15 +11,10 @@ class UserContainer extends Component {
     return (
       <div>
         <LiveItem name='user' params={params} component={About} />
+        <h2>Tutorials</h2>
         <LiveList name='user_tutorials' params={params} component={Tutorials} />
-
-        {/*
-        {this.state.comments.length
-          ? <span>
-            <h2>Comments</h2>
-            <Comments comments={this.state.comments}/>
-          </span> : null}
-        */}
+        <h2>Comments</h2>
+        <LiveList name='user_comments' params={params} component={Comments} />
       </div>
     )
   }
