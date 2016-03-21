@@ -10,7 +10,7 @@ function AboutUser (props) {
     fullName,
     homepage,
     about
-  } = props
+  } = props.data
 
   return (
     <div className={styles.aboutUser} key={username}>

@@ -4,20 +4,19 @@ import helpers from '../../utils/helpers'
 import numeral from 'numeral'
 
 function AboutLanguage (props) {
-  
-  const id = props.id
+  const slug = props.data.slug
 
-  if (!id) return <p>Loading...</p>
+  if (!slug) return <p>Loading...</p>
 
-  const imgUrl = helpers.picUrl(id)
+  const imgUrl = helpers.picUrl(slug)
   const {
     name,
     projectsCount,
     tutorialsCount
-  } = props
+  } = props.data
 
   return (
-    <div className={styles.about} key={id}>
+    <div className={styles.about}>
       <h1>{name}</h1>
       <img src={imgUrl}/>
       <div className={styles.meta}>

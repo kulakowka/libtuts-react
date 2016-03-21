@@ -6,11 +6,11 @@ import { LiveItem, LiveList } from '../../api/client'
 
 class UserContainer extends Component {
   render () {
-    const id = this.props.params.id
-
+    const params = this.props.params
+    
     return (
       <div>
-        <LiveItem name='user' id={id} component={About} />
+        <LiveItem name='user' params={params} component={About} />
 
         {/*
         <About {...this.state.user}/>
@@ -38,7 +38,7 @@ UserContainer.contextTypes = {
 
 UserContainer.propTypes = {
   params: PropTypes.shape({
-    id: PropTypes.string.isRequired
+    username: PropTypes.string.isRequired
   }).isRequired
 }
 

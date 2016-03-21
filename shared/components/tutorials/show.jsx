@@ -7,7 +7,7 @@ import Button from '../button/button'
 import Section from '../section/section'
 
 function Tutorial (props) {
-  const id = props.id
+  const id = props.data.id
 
   // console.log('props', props)
 
@@ -21,7 +21,7 @@ function Tutorial (props) {
     createdAt,
     updatedAt,
     author
-  } = props
+  } = props.data
 
   let languages = helpers.tagsByCommas(props.languages, renderLanguage)
   let projects = helpers.tagsByCommas(props.projects, renderProject)

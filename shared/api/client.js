@@ -33,29 +33,11 @@ export class LiveList extends Component {
   constructor (props, context) {
     super(props, context)
 
-    this.onItems = (items, next) => {
-      console.log('onItems', items)
-
+    this.receiveItems = (items, next) => {
       let data = new Map()
       items.forEach((item) => {
         data.set(item.id, item)
       })
-      this.setState({ data }, next)
-    }
-
-    this.onSet = (item, next) => {
-      console.log('onSet', item)
-
-      let data = this.state.data
-      data.set(item.id, item)
-      this.setState({ data }, next)
-    }
-
-    this.onDelete = (item, next) => {
-      console.log('onDelete', item)
-
-      let data = this.state.data
-      data.delete(item.id)
       this.setState({ data }, next)
     }
 
@@ -67,26 +49,14 @@ export class LiveList extends Component {
   componentDidMount () {
     let name = this.props.name
 
-    // console.log('componentDidMount', name, this)
-
-    // socket.on(name, this.onItems)
-
-    socket.on(name + ':set', this.onSet)
-    socket.on(name + ':delete', this.onDelete)
-
-    socket.emit(name + ':start', this.props)
+    socket.emit('get ' + name, { last: 0 })
+    socket.on('receive ' + name, this.receiveItems)
   }
 
   componentWillUnmount () {
     let name = this.props.name
 
-    // console.log('componentWillUnmount', name, this)
-
-    // socket.off(name, this.onItems)
-    socket.emit(name + ':stop', this.props)
-
-    socket.off(name + ':set', this.onSet)
-    socket.off(name + ':delete', this.onDelete)
+    socket.off('receive ' + name, this.receiveItems)
   }
 
   render () {
@@ -121,11 +91,16 @@ LiveList.propTypes = {
   component: PropTypes.func.isRequired
 }
 
+// /////////// LiveItem ///////////////// //
+
 export class LiveItem extends Component {
   constructor (props, context) {
     super(props, context)
 
-    this.onUpdate = this.__onUpdate.bind(this)
+    this.receiveItem = (data, next) => {
+      // console.log('receiveItem', data)
+      this.setState({ data }, next)
+    }
 
     this.state = {
       data: {}
@@ -134,18 +109,27 @@ export class LiveItem extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.id !== this.props.id) {
-      this.__off(this.props.id, () => {
-        this.__on(nextProps.id)
-      })
+      let params = nextProps.params
+      let name = nextProps.name
+
+      socket.emit('get ' + name, params)
     }
   }
 
   componentDidMount () {
-    this.__on(this.props.id)
+    let params = this.props.params
+    let name = this.props.name
+
+    console.log('componentDidMount', this.props)
+
+    socket.emit('get ' + name, params)
+    socket.on('receive ' + name, this.receiveItem)
   }
 
   componentWillUnmount () {
-    this.__off(this.props.id)
+    let name = this.props.name
+
+    socket.off('receive ' + name, this.receiveItem)
   }
 
   render () {
@@ -153,40 +137,12 @@ export class LiveItem extends Component {
     let Component = props.component
     let data = this.state.data
 
-    return <Component {...data} />
-  }
-
-  __on (id, cb) {
-    let props = this.props
-    let name = props.name
-    var changes = socket.subscribe(name + ':' + id + ':update')
-    changes.on('subscribeFail', subscribeFailed)
-    changes.watch(this.onUpdate)
-    socket.emit(name + ':findOne', { id })
-    socket.on(name + ':' + id + ':update', this.onUpdate)
-
-    this.changes = changes
-
-    cb && cb()
-  }
-
-  __off (id, cb) {
-    let props = this.props
-    let name = props.name
-    socket.unsubscribe(name + ':' + id + ':update')
-    this.changes.unwatch(this.onWatch)
-    socket.off('subscribeFail', subscribeFailed)
-    socket.off(name + ':' + id + ':update', this.onUpdate)
-
-    cb && cb()
-  }
-
-  __onUpdate (data, done) {
-    this.setState({ data }, done)
+    return <Component {...props} data={data} />
   }
 }
 
 LiveItem.propTypes = {
+  params: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   component: PropTypes.func.isRequired
 }

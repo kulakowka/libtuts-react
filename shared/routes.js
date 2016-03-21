@@ -40,11 +40,11 @@ const routes = (
 
     <Route path='/languages/new' component={LanguagesNew}/>
     <Route path='/languages' component={LanguagesIndex}/>
-    <Route path='/language/:id' component={LanguageShow}/>
+    <Route path='/language/:slug' component={LanguageShow}/>
 
     <Route path='/projects/new' component={ProjectsNew}/>
     <Route path='/projects' component={ProjectsIndex}/>
-    <Route path='/project/:id' component={ProjectShow}/>
+    <Route path='/project/:slug' component={ProjectShow}/>
 
     <Route path='/search/tutorials' component={SearchTutorialsIndex}/>
 
@@ -53,7 +53,7 @@ const routes = (
     <Route path='/tutorial/:id' component={TutorialShow}/>
     <Route path='/tutorial/:id/edit' component={TutorialEdit}/>
 
-    <Route path='/user/:id' component={UserShow}/>
+    <Route path='/user/:username' component={UserShow}/>
   </Route>
 )
 

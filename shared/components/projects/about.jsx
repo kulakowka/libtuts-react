@@ -5,8 +5,7 @@ import helpers from '../../utils/helpers'
 import Section from '../section/section'
 
 function AboutProject (props) {
-  
-  const slug = props.slug
+  const slug = props.data.slug
 
   if (!slug) return <p>Loading...</p>
 
@@ -17,13 +16,13 @@ function AboutProject (props) {
     description,
     homepage,
     repository
-  } = props
+  } = props.data
 
   let languages = helpers.tagsByCommas(helpers.toArray(props.languages), renderLanguage)
   let keywords = helpers.tagsByCommas(props.keywords, renderKeyword)
 
   return (
-    <div className={styles.about} key={slug}>
+    <div className={styles.about}>
       <h1>{name}</h1>
 
       {description

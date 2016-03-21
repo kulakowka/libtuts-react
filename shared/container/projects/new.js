@@ -17,11 +17,9 @@ class NewProjectContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
-    // console.log('data', data, event)
-
     this.setState({error: null, loading: true})
 
-    socket.emit('projects:create', data, (err) => {
+    socket.emit('create project', data, (err) => {
       if (err) return console.log('projects create error', err)
       this.context.router.push('/projects')
     })

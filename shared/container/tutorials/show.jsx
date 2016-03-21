@@ -7,12 +7,12 @@ import { LiveItem, LiveList } from '../../api/client'
 
 class TutorialContainer extends Component {
   render () {
-    const id = this.props.params.id
-    const filter = {tutorialId: id}
+    const params = this.props.params
+
     return (
       <Row>
         <Col size={8} left>
-          <LiveItem name='tutorial' id={id} component={Show} />
+          <LiveItem name='tutorial' params={params} component={Show} />
           <h2>Questions and discussion</h2>
           {/*<LiveList name='comments' filter={filter} component={Comments} />*/}
         </Col>

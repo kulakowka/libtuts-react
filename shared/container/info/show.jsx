@@ -9,10 +9,10 @@ function Page (props) {
 
 class InfoContainer extends Component {
   render () {
-    const page = this.props.params.page
+    const params = this.props.params
     return (
       <Section>
-        <LiveItem name='page' id={page} component={Page} />
+        <LiveItem name='page' params={params} component={Page} />
       </Section>
     )
   }

@@ -1,18 +1,15 @@
-import React, { Component } from 'react'
-import firebase from '../../utils/firebase'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
+import React, { Component, PropTypes } from 'react'
 import About from '../../components/projects/about'
 import Tutorials from '../../components/tutorials/list'
 import { LiveItem } from '../../api/client'
 
 class ProjectContainer extends Component {
   render () {
-    const id = this.props.params.id
+    const params = this.props.params
 
     return (
       <div>
-        <LiveItem name='project' id={id} component={About} />
+        <LiveItem name='project' params={params} component={About} />
 
         {/*
         {this.state.tutorials.length
@@ -26,6 +23,14 @@ class ProjectContainer extends Component {
   }
 }
 
-reactMixin(ProjectContainer.prototype, ReactFireMixin)
+ProjectContainer.contextTypes = {
+  router: PropTypes.object
+}
+
+ProjectContainer.propTypes = {
+  params: PropTypes.shape({
+    slug: PropTypes.string.isRequired
+  }).isRequired
+}
 
 export default ProjectContainer

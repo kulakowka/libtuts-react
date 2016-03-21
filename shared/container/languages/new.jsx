@@ -17,11 +17,9 @@ class NewLanguageContainer extends Component {
   handleSubmit (data, event) {
     event.preventDefault()
 
-    // console.log('data', data, event)
-
     this.setState({error: null, loading: true})
 
-    socket.emit('languages:create', data, (err) => {
+    socket.emit('create language', data, (err) => {
       if (err) return console.log('languages create error', err)
       this.context.router.push('/languages')
     })

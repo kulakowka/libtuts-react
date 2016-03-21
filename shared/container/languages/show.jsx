@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import About from '../../components/languages/about'
 import Tutorials from '../../components/tutorials/list'
 import Projects from '../../components/projects/list'
@@ -6,11 +6,11 @@ import { LiveItem } from '../../api/client'
 
 class LanguageContainer extends Component {
   render () {
-    const id = this.props.params.id
+    const params = this.props.params
 
     return (
       <div>
-        <LiveItem name='language' id={id} component={About} />
+        <LiveItem name='language' params={params} component={About} />
 
         {/*
         {this.state.tutorials.length
@@ -28,6 +28,16 @@ class LanguageContainer extends Component {
       </div>
     )
   }
+}
+
+LanguageContainer.contextTypes = {
+  router: PropTypes.object
+}
+
+LanguageContainer.propTypes = {
+  params: PropTypes.shape({
+    slug: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default LanguageContainer
