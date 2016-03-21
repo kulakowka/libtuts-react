@@ -14,7 +14,7 @@ class TutorialContainer extends Component {
         <Col size={8} left>
           <LiveItem name='tutorial' params={params} component={Show} />
           <h2>Questions and discussion</h2>
-          {/*<LiveList name='comments' filter={filter} component={Comments} />*/}
+          <LiveList name='tutorial_comments' params={params} component={Comments} />
         </Col>
       </Row>
     )

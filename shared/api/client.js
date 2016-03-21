@@ -22,10 +22,6 @@ function onError (err) {
   console.log('Socket error - ', err)
 }
 
-function subscribeFailed (err) {
-  console.log('Failed to subscribe to the "user/changes" channel due to error: ' + err)
-}
-
 // livelist
 
 // <LiveList name='tutorials' component={Tutorials} />
@@ -121,8 +117,6 @@ export class LiveItem extends Component {
   componentDidMount () {
     let params = this.props.params
     let name = this.props.name
-
-    console.log('componentDidMount', this.props)
 
     socket.emit('get ' + name, params)
     socket.on('receive ' + name, this.receiveItem)

@@ -6,21 +6,22 @@ import moment from 'moment'
 import Section from '../section/section'
 
 function CommentsItem (props) {
+  console.log(props)
   const id = props.id
 
   const {
-    content,
+    contentHtml,
     author,
     createdAt,
     tutorial
   } = props
 
-  const getContent = () => ({__html: content.html})
+  const getContent = () => ({__html: contentHtml})
 
   return (
     <Section className={styles.item} id={'comment_' + id} key={id}>
       <div className={styles.meta}>
-        <Link className={styles.creator} to={helpers.userUrl(author.username)}>{author.fullName}</Link>
+        <Link className={styles.creator} to={helpers.userUrl(author.username)}>{author.fullName || author.username}</Link>
         <Link to={helpers.commentUrl(tutorial, id)}>{moment(createdAt).fromNow()}</Link>
       </div>
       <div className={styles.content} dangerouslySetInnerHTML={getContent()}/>
