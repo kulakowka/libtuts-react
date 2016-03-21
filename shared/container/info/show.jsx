@@ -3,7 +3,7 @@ import Section from '../../components/section/section'
 import { LiveItem } from '../../api/client'
 
 function Page (props) {
-  const content = () => ({__html: props.html})
+  const content = () => ({__html: props.data.html})
   return <div dangerouslySetInnerHTML={content()}/>
 }
 

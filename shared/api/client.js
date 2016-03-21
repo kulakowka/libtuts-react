@@ -108,7 +108,7 @@ export class LiveItem extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.id !== this.props.id) {
+    if (nextProps.params !== this.props.params) {
       let params = nextProps.params
       let name = nextProps.name
 
