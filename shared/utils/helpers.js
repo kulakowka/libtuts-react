@@ -1,6 +1,12 @@
 const baseUrl = process.env.BASE_URL
 
 const helpers = {
+  numeral (num) {
+    if (num > 999999) return Math.round(num / 1000000) + 'm'
+    if (num > 999) return Math.round(num / 1000) + 'k'
+    return num.toString()
+  },
+
   tutorialsUrl () {
     return '/tutorials'
   },

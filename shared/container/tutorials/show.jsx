@@ -4,8 +4,7 @@ import Comments from '../../components/comments/list'
 import Form from '../../components/comments/form'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
-import { LiveItem, LiveList } from '../../api/client'
-import { socket } from '../../api/client'
+import { LiveItem, LiveList, socket } from '../../api/client'
 
 class TutorialContainer extends Component {
   constructor (props, context) {

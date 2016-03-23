@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './show.styl'
 import helpers from '../../utils/helpers'
-import moment from 'moment'
+import TimeAgo from 'react-timeago'
 import Button from '../button/button'
 import Section from '../section/section'
 
@@ -54,10 +54,10 @@ function Tutorial (props) {
           </span> : null}
 
           <dt>Created at:</dt>
-          <dd>{moment(createdAt).fromNow()}</dd>
+          <dd><TimeAgo date={createdAt} /></dd>
 
           <dt>Updated at:</dt>
-          <dd>{moment(updatedAt).fromNow()}</dd>
+          <dd><TimeAgo date={updatedAt} /></dd>
 
           <dt>Created by:</dt>
           <dd>

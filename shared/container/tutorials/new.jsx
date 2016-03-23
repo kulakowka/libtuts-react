@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import Form from '../../components/tutorials/form'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
@@ -42,8 +40,6 @@ class NewTutorialContainer extends Component {
     )
   }
 }
-
-reactMixin(NewTutorialContainer.prototype, ReactFireMixin)
 
 NewTutorialContainer.contextTypes = {
   router: PropTypes.object

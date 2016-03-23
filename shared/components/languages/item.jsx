@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './item.styl'
 import helpers from '../../utils/helpers'
-import numeral from 'numeral'
 
 function LanguageItem (props) {
   const id = props.slug
@@ -19,8 +18,8 @@ function LanguageItem (props) {
       <Link to={url}><img src={imgUrl}/></Link>
       <h3><Link to={url}>{name}</Link></h3>
       <div className={styles.meta}>
-        <Link to={url} title={numeral(tutorialsCount).format('0,0')}>{numeral(tutorialsCount).format('0a')} tutorials</Link>
-        <Link to={url} title={numeral(projectsCount).format('0,0')}>{numeral(projectsCount).format('0a')} projects</Link>
+        <Link to={url} title={helpers.numeral(tutorialsCount)}>{helpers.numeral(tutorialsCount)} tutorials</Link>
+        <Link to={url} title={helpers.numeral(projectsCount)}>{helpers.numeral(projectsCount)} projects</Link>
       </div>
     </div>
   )

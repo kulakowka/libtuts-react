@@ -1,6 +1,5 @@
 import socketCluster from 'socketcluster-client'
 import React, { Component, PropTypes } from 'react'
-// import reactMixin from 'react-mixin'
 
 export var socket = socketCluster.connect({
   hostname: 'localhost',
@@ -29,16 +28,30 @@ export class LiveList extends Component {
   constructor (props, context) {
     super(props, context)
 
+    this.onUpdate = (item) => {
+      let data = this.state.data
+      data.set(item.id, item)
+      this.setState({ data })
+    }
+
     this.receiveItems = (items, next) => {
+      let name = this.props.name
       let data = new Map()
+      let channels = new Map()
+
       items.forEach((item) => {
+        let channel = socket.subscribe(name + '/' + item.id)
+        channel.watch(this.onUpdate)
+        channels.set(item.id, channel)
         data.set(item.id, item)
       })
-      this.setState({ data }, next)
+
+      this.setState({ data, channels }, next)
     }
 
     this.state = {
-      data: new Map()
+      data: new Map(),
+      channels: new Map()
     }
   }
 
@@ -54,6 +67,10 @@ export class LiveList extends Component {
     let name = this.props.name
 
     socket.off('receive ' + name, this.receiveItems)
+
+    this.state.channels.forEach((channel) => {
+      channel.destroy()
+    })
   }
 
   render () {
@@ -91,17 +108,28 @@ LiveList.propTypes = {
 
 // /////////// LiveItem ///////////////// //
 
+// <LiveItem name='tutorial' params={params} component={Tutorial} />
 export class LiveItem extends Component {
   constructor (props, context) {
     super(props, context)
 
+    this.onUpdate = (data) => {
+      this.setState({ data })
+    }
+
     this.receiveItem = (data, next) => {
-      // console.log('receiveItem', data)
-      this.setState({ data }, next)
+      let name = this.props.name
+      let channels = new Map()
+      console.log('subscribe', name + 's/' + data.id)
+      let channel = socket.subscribe(name + 's/' + data.id)
+      channel.watch(this.onUpdate)
+      channels.set(data.id, channel)
+      this.setState({ data, channels }, next)
     }
 
     this.state = {
-      data: {}
+      data: {},
+      channels: new Map()
     }
   }
 
@@ -126,6 +154,11 @@ export class LiveItem extends Component {
     let name = this.props.name
 
     socket.off('receive ' + name, this.receiveItem)
+
+    this.state.channels.forEach((channel) => {
+      console.log('destroy', channel.name)
+      channel.destroy()
+    })
   }
 
   render () {

@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './item.styl'
 import helpers from '../../utils/helpers'
-import numeral from 'numeral'
-import moment from 'moment'
+import TimeAgo from 'react-timeago'
 
 function TutorialsItem (props) {
   const id = props.id
@@ -26,8 +25,8 @@ function TutorialsItem (props) {
         }
       </h3>
       <div className={styles.meta}>
-        <Link to={helpers.tutorialCommentsUrl(id)} title={numeral(commentsCount).format('0,0')}>
-          {numeral(commentsCount).format('0a')} comments
+        <Link to={helpers.tutorialCommentsUrl(id)} title={helpers.numeral(commentsCount)}>
+          {helpers.numeral(commentsCount)} comments
         </Link>
 
         <Link to={helpers.userUrl(author.username)}>
@@ -35,7 +34,7 @@ function TutorialsItem (props) {
         </Link>
 
         <Link to={url}>
-          {moment(createdAt).fromNow()}
+          <TimeAgo date={createdAt} />
         </Link>
 
         {domain

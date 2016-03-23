@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import ref from '../../../utils/firebase'
-import helpers from '../../../utils/helpers'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
-import Tutorials from '../../../components/tutorials/list'
 
-const queue = ref.child('search/tutorials')
+import helpers from '../../../utils/helpers'
+
+import Tutorials from '../../../components/tutorials/list'
 
 class SearchContainer extends Component {
   constructor (props, context) {
@@ -51,31 +48,31 @@ class SearchContainer extends Component {
       }
     }
 
-    const reqRef = queue.child('requests').push({query})
+    // const reqRef = queue.child('requests').push({query})
 
-    const callback = (data) => {
-      this.setState({
-        total: data.total
-      })
+    // const callback = (data) => {
+    //   this.setState({
+    //     total: data.total
+    //   })
 
-      // Щас вроде работает, но надо еще поковырять, удалять слушатели событий например после каждого нового поиска и тд...
-      let tutorials = {}
-      Object.keys(data.index).forEach((key) => {
-        ref.child('tutorials/' + key).on('value', (snap) => {
-          let tutorial = snap.val()
-          tutorials[key] = tutorial
-          this.setState({tutorials})
-        })
-      })
-    }
+    //   // Щас вроде работает, но надо еще поковырять, удалять слушатели событий например после каждого нового поиска и тд...
+    //   let tutorials = {}
+    //   Object.keys(data.index).forEach((key) => {
+    //     ref.child('tutorials/' + key).on('value', (snap) => {
+    //       let tutorial = snap.val()
+    //       tutorials[key] = tutorial
+    //       this.setState({tutorials})
+    //     })
+    //   })
+    // }
 
-    queue.child('responses/' + reqRef.key()).on('value', function fn (snap) {
-      if (snap.val()) {     // wait for data
-        snap.ref().off('value', fn) // stop listening
-        snap.ref().remove()         // clear the queue
-        callback(snap.val())
-      }
-    })
+    // queue.child('responses/' + reqRef.key()).on('value', function fn (snap) {
+    //   if (snap.val()) {     // wait for data
+    //     snap.ref().off('value', fn) // stop listening
+    //     snap.ref().remove()         // clear the queue
+    //     callback(snap.val())
+    //   }
+    // })
   }
 
   render () {
@@ -94,7 +91,5 @@ class SearchContainer extends Component {
     )
   }
 }
-
-reactMixin(SearchContainer.prototype, ReactFireMixin)
 
 export default SearchContainer

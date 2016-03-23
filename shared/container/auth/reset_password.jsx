@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import firebase from '../../utils/firebase'
 import { Link } from 'react-router'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import Row from '../../components/grid/row'
 import Col from '../../components/grid/col'
 import Button from '../../components/button/button'
@@ -26,10 +23,10 @@ class SignInContainer extends Component {
 
     this.setState({error: null, loading: true})
 
-    firebase
-    .resetPassword(data)
-    .then(this.success.bind(this))
-    .catch(this.fail.bind(this))
+    // firebase
+    // .resetPassword(data)
+    // .then(this.success.bind(this))
+    // .catch(this.fail.bind(this))
   }
 
   success (authData) {
@@ -71,7 +68,7 @@ class SignInContainer extends Component {
   }
 }
 
-reactMixin(SignInContainer.prototype, ReactFireMixin)
+// reactMixin(SignInContainer.prototype, ReactFireMixin)
 
 SignInContainer.contextTypes = {
   router: PropTypes.object

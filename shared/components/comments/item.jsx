@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import styles from './item.styl'
 import helpers from '../../utils/helpers'
-import moment from 'moment'
+import TimeAgo from 'react-timeago'
 import Section from '../section/section'
 
 function CommentsItem (props) {
@@ -21,7 +21,9 @@ function CommentsItem (props) {
     <Section className={styles.item} id={'comment_' + id} key={id}>
       <div className={styles.meta}>
         <Link className={styles.creator} to={helpers.userUrl(author.username)}>{author.fullName || author.username}</Link>
-        <Link to={helpers.commentUrl(tutorial, id)}>{moment(createdAt).fromNow()}</Link>
+        <Link to={helpers.commentUrl(tutorial, id)}>
+          <TimeAgo date={createdAt} />
+        </Link>
       </div>
       <div className={styles.content} dangerouslySetInnerHTML={getContent()}/>
     </Section>
