@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import styles from '../forms/default.styl'
 import Section from '../section/section'
 import Button from '../button/button'
-
+import Textarea from 'react-textarea-autosize'
 import SelectLanguages from '../select/languages'
 import SelectProjects from '../select/projects'
 
@@ -70,7 +70,7 @@ class TutorialForm extends Component {
           </div>
 
           <div className={styles.field}>
-            <textarea valueLink={this.linkState('content')} placeholder='Content' rows='5'/>
+            <Textarea valueLink={this.linkState('content')} placeholder='Content' rows='5'/>
           </div>
 
           <div className={styles.field}>

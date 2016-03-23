@@ -4,6 +4,7 @@ import LinkedStateMixin from 'react-addons-linked-state-mixin'
 import styles from '../forms/default.styl'
 import Button from '../button/button'
 import Section from '../section/section'
+import Textarea from 'react-textarea-autosize'
 
 class CommentForm extends Component {
   constructor (props, context) {
@@ -28,7 +29,7 @@ class CommentForm extends Component {
             : null}
 
           <div className={styles.field}>
-            <textarea valueLink={this.linkState('content')} placeholder='Content' rows='5'/>
+            <Textarea valueLink={this.linkState('content')} placeholder='Content' rows={5}/>
           </div>
 
           <div className={styles.field}>
